@@ -8,10 +8,6 @@ public class Cow {
     private boolean purchased;
 
 
-    public Cow(){
-
-    }
-
     public Cow(int tagNo, String gender, LocalDate dateOfBirth, boolean purchased){
         this.tagNo = tagNo;
         this.gender = gender;

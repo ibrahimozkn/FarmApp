@@ -7,6 +7,19 @@ public class Veterinary {
     private double salary;
 
 
+    public Veterinary(int vetID, String gender, LocalDate dateOfBirth){
+        this.vetID = vetID;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        salary = 0;
+    }
+
+    public Veterinary(int vetID, String gender, LocalDate dateOfBirth, double salary){
+        this.vetID = vetID;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.salary = salary;
+    }
 
     public int getVetID() {
         return vetID;

@@ -43,6 +43,7 @@ public class FarmMe {
             option = userInput.nextInt();
 
             int tagNo;
+            int vetId;
             switch (option){
                 case 1:
                     addCow();
@@ -56,13 +57,28 @@ public class FarmMe {
 
                     break;
                 case 3:
-                    System.out.println("Please enter tagNo of the cow you want to delete: ");
+                    System.out.println("Please enter tagNo of the cow you want to see details: ");
                     tagNo = userInput.nextInt();
                     userInput.nextLine();
 
                     getCowDetails(tagNo);
                     break;
                 case 4:
+                    addVet();
+                    break;
+                case 5:
+                    System.out.println("Please enter vetID of the vet you want to delete: ");
+                    vetId = userInput.nextInt();
+                    userInput.nextLine();
+
+                    deleteVet(vetId);
+                    break;
+                case 6:
+                    System.out.println("Please enter vetID of the vet you want to see details: ");
+                    vetId = userInput.nextInt();
+                    userInput.nextLine();
+
+                    getVetDetails(vetId);
                     break;
                 default:
                     System.out.println("Invalid option");
@@ -217,10 +233,31 @@ public class FarmMe {
         double salary = userInput.nextDouble();
         userInput.nextLine();
 
-        this.vets.add(new Veterinary());
+        this.vets.add(new Veterinary(vetId, gender, date, salary));
+        System.out.println("Vet added successfully!\n");
 
+    }
 
+    public void deleteVet(int vetID){
+        if(this.vets.removeIf(c -> c.getVetID() == vetID)){
+            System.out.println("Vet with tagNo " + vetID + " deleted successfully");
+        }else{
+            System.out.println("Vet with tagNo " + vetID + " doesn't exist");
+        }
+    }
 
+    public void getVetDetails(int vetId){
+        if(vets.stream().anyMatch(c -> c.getVetID() == vetId)){
+            Veterinary vet = vets.stream().filter(c -> c.getVetID() == vetId).findFirst().orElse(null);
+
+            System.out.println("Vet #" + vetId);
+            System.out.println("Gender: " + vet.getGender());
+            System.out.println("Date of birth: " + vet.getDateOfBirth().toString());
+            System.out.println("Salary: $" + vet.getSalary());
+
+        }else{
+            System.out.println("Vet with vetID " + vetId + " doesn't exist");
+        }
     }
 
     public FarmMe(){
