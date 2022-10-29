@@ -6,6 +6,8 @@ public class Veterinary {
     private LocalDate dateOfBirth;
     private double salary;
 
+
+
     public int getVetID() {
         return vetID;
     }

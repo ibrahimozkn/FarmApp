@@ -8,11 +8,28 @@ public class Cow {
     private boolean purchased;
 
 
+    public Cow(){
+
+    }
+
+    public Cow(int tagNo, String gender, LocalDate dateOfBirth, boolean purchased){
+        this.tagNo = tagNo;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.purchased = purchased;
+    }
+
+    public Cow(int tagNo, String gender){
+        this.tagNo = tagNo;
+        this.gender = gender;
+        this.purchased = false;
+        this.dateOfBirth = LocalDate.now();
+    }
+
 
     public int getAge(){
         return LocalDate.now().getYear() - dateOfBirth.getYear();
     }
-
 
     public int getTagNo(){
         return this.tagNo;
