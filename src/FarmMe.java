@@ -4,11 +4,25 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * The type Farm me.
+ */
 public class FarmMe {
 
+    /**
+     * The Cows.
+     */
     public ArrayList<Cow> cows;
+    /**
+     * The Vets.
+     */
     public ArrayList<Veterinary> vets;
 
+    /**
+     * Main.
+     *
+     * @param args the args
+     */
     public static void main(String[] args){
         FarmMe farm = PopulateData.populate();
 
@@ -16,6 +30,9 @@ public class FarmMe {
         farm.menu();
     }
 
+    /**
+     * Menu.
+     */
     public void menu(){
 
         System.out.println("Welcome to FarmApp!");
@@ -80,6 +97,18 @@ public class FarmMe {
 
                     getVetDetails(vetId);
                     break;
+                case 7:
+                    System.out.println("Please enter vetID: ");
+                    vetId = userInput.nextInt();
+                    userInput.nextLine();
+
+                    System.out.println("Please enter tagNo: ");
+                    tagNo = userInput.nextInt();
+                    userInput.nextLine();
+
+                    addTreatment(vetId, tagNo);
+
+                    break;
                 default:
                     System.out.println("Invalid option");
                     break;
@@ -90,6 +119,9 @@ public class FarmMe {
         }while (option != 11);
     }
 
+    /**
+     * Add cow.
+     */
     public void addCow(){
         Scanner userInput = new Scanner(System.in);
 
@@ -156,6 +188,11 @@ public class FarmMe {
 
     }
 
+    /**
+     * Delete cow.
+     *
+     * @param tagNo the tag no
+     */
     public void deleteCow(int tagNo){
         if(this.cows.removeIf(c -> c.getTagNo() == tagNo)){
             System.out.println("Cow with tagNo " + tagNo + " deleted successfully");
@@ -164,6 +201,11 @@ public class FarmMe {
         }
     }
 
+    /**
+     * Get cow details.
+     *
+     * @param tagNo the tag no
+     */
     public void getCowDetails(int tagNo){
         if(cows.stream().anyMatch(c -> c.getTagNo() == tagNo)){
             Cow cow = cows.stream().filter(c -> c.getTagNo() == tagNo).findFirst().orElse(null);
@@ -179,6 +221,9 @@ public class FarmMe {
     }
 
 
+    /**
+     * Add vet.
+     */
     public void addVet(){
         Scanner userInput = new Scanner(System.in);
 
@@ -238,6 +283,11 @@ public class FarmMe {
 
     }
 
+    /**
+     * Delete vet.
+     *
+     * @param vetID the vet id
+     */
     public void deleteVet(int vetID){
         if(this.vets.removeIf(c -> c.getVetID() == vetID)){
             System.out.println("Vet with tagNo " + vetID + " deleted successfully");
@@ -246,6 +296,11 @@ public class FarmMe {
         }
     }
 
+    /**
+     * Get vet details.
+     *
+     * @param vetId the vet id
+     */
     public void getVetDetails(int vetId){
         if(vets.stream().anyMatch(c -> c.getVetID() == vetId)){
             Veterinary vet = vets.stream().filter(c -> c.getVetID() == vetId).findFirst().orElse(null);
@@ -260,16 +315,179 @@ public class FarmMe {
         }
     }
 
+    /**
+     * Add treatment.
+     *
+     * @param vetID the vet id
+     * @param tagNo the tag no
+     */
+    public void addTreatment(int vetID, int tagNo){
+
+        if(!vets.stream().anyMatch(c -> c.getVetID() == vetID)){
+            System.out.println("Vet with vetID " + vetID + " doesn't exist");
+            return;
+        }
+
+        Veterinary vet = vets.stream().filter(v -> v.getVetID() == vetID).findFirst().orElse(null);
+
+        if(!cows.stream().anyMatch(c -> c.getTagNo() == tagNo)){
+            System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+        }
+
+        Cow cow = cows.stream().filter(v -> v.getTagNo() == tagNo).findFirst().orElse(null);
+
+
+        Scanner userInput = new Scanner(System.in);
+
+
+        LocalDate date;
+
+        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+
+        while (true){
+            try{
+                System.out.println("Enter date of treatment (dd/mm/yyyy): ");
+                String dateRaw = userInput.nextLine();
+
+                date = LocalDate.parse(dateRaw, dateFormat);
+                System.out.println(date.toString());
+                break;
+
+            }catch (Exception e){
+                System.out.println("Invalid date, correct format (dd/mm/yyyy)");
+                continue;
+            }
+        }
+
+        System.out.println("Please enter details of treatment");
+        String details = userInput.nextLine();
+
+
+
+        System.out.println("Please enter medication details of the treatment");
+
+
+        Treatment treatment = new Treatment(date, details, vet);
+
+        int counter = 1;
+        while (true){
+            System.out.println("Medication #" + counter);
+            System.out.println("Please enter details of the medication");
+            String medDetails = userInput.nextLine();
+
+            System.out.println("Please enter the duration of medication");
+            int duration = userInput.nextInt();
+            userInput.nextLine();
+
+            LocalDate startDate;
+
+            while (true){
+                try{
+                    System.out.println("Enter start date of medication (dd/mm/yyyy): ");
+                    String dateRaw = userInput.nextLine();
+
+                    startDate = LocalDate.parse(dateRaw, dateFormat);
+                    System.out.println(startDate.toString());
+                    break;
+
+                }catch (Exception e){
+                    System.out.println("Invalid date, correct format (dd/mm/yyyy)");
+                    continue;
+                }
+            }
+
+            System.out.println("Please enter the dosage of medication");
+            double dosage = userInput.nextDouble();
+            userInput.nextLine();
+
+            System.out.println("Please enter the notes of medication");
+            String notes = userInput.nextLine();
+
+
+            treatment.hasMedication(new Medication(medDetails, duration, startDate, dosage, notes));
+            System.out.println("Medication added successfully");
+
+
+            System.out.println("\nDo you want to add one more medication? (1) yes (0) no");
+            int addMed = userInput.nextInt();
+            userInput.nextLine();
+
+            if(addMed == 0) break;
+            counter++;
+
+        }
+
+        cow.hasTreatment(treatment);
+        System.out.println("Treatment is added to cow with tagNo " + tagNo + " successfully");
+
+
+    }
+
+    public void getCowTreatment(int tagNo){
+        if(!cows.stream().anyMatch(c -> c.getTagNo() == tagNo)){
+            System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+        }
+
+        Cow cow = cows.stream().filter(v -> v.getTagNo() == tagNo).findFirst().orElse(null);
+
+        if(cow.getTreatments().isEmpty()){
+            System.out.println("Cow has no treatments");
+            return;
+        }
+
+        int counter = 1;
+        for (Treatment treatment: cow.getTreatments()) {
+            System.out.println("Treatment #" + counter);
+            System.out.println("Date of treatment: " + treatment.getDateOfTreatment());
+            System.out.println("Details: " + treatment.getDetails());
+            System.out.println("Treatment given by: " + treatment.getVet());
+
+            System.out.println("Medications:");
+
+            int medCount = 1;
+            for (Medication medication:
+                 treatment.getMedications()) {
+                System.out.println("\nMedication #" + medCount);
+                System.out.println("Details: " + medication.getDetails());
+                System.out.println("Duration: " + medication.getDuration());
+                System.out.println("Start Date: " + medication.getStartDate().toString());
+                System.out.println("Dosage: " + medication.getDosage());
+                System.out.println("Notes: " + medication.getNotes());
+
+                medCount++;
+
+            }
+
+
+            counter++;
+        }
+    }
+
+    /**
+     * Instantiates a new Farm me.
+     */
     public FarmMe(){
         this.cows = new ArrayList<Cow>();
         this.vets = new ArrayList<Veterinary>();
     }
 
+    /**
+     * Instantiates a new Farm me.
+     *
+     * @param cows the cows
+     */
     public FarmMe(ArrayList<Cow> cows){
         this.cows = new ArrayList<Cow>(cows);
         this.vets = new ArrayList<Veterinary>();
     }
 
+    /**
+     * Instantiates a new Farm me.
+     *
+     * @param cows the cows
+     * @param vets the vets
+     */
     public FarmMe(ArrayList<Cow> cows, ArrayList<Veterinary> vets){
         this.cows = new ArrayList<Cow>(cows);
         this.vets = new ArrayList<Veterinary>(vets);

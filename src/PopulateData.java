@@ -1,7 +1,15 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * The type Populate data.
+ */
 public class PopulateData {
+    /**
+     * Populate farm me.
+     *
+     * @return the farm me
+     */
     public static FarmMe populate(){
         ArrayList<Cow> cows = new ArrayList<Cow>();
         cows.add(new Cow(1, "male", LocalDate.now(), true));
