@@ -39,7 +39,7 @@ public class FarmMe {
 
         int option;
 
-        do{
+        while(true){
             Scanner userInput = new Scanner(System.in);
 
             System.out.println("(1) Add a new cow");
@@ -109,6 +109,20 @@ public class FarmMe {
                     addTreatment(vetId, tagNo);
 
                     break;
+                case 8:
+                    System.out.println("Please enter tagNo: ");
+                    tagNo = userInput.nextInt();
+                    userInput.nextLine();
+
+                    getCowTreatment(tagNo);
+                    break;
+                case 9:
+                    break;
+                case 10:
+                    break;
+                case 11:
+                    exit();
+                    break;
                 default:
                     System.out.println("Invalid option");
                     break;
@@ -116,7 +130,7 @@ public class FarmMe {
 
             System.out.println("\n");
 
-        }while (option != 11);
+        }
     }
 
     /**
@@ -210,9 +224,12 @@ public class FarmMe {
         if(cows.stream().anyMatch(c -> c.getTagNo() == tagNo)){
             Cow cow = cows.stream().filter(c -> c.getTagNo() == tagNo).findFirst().orElse(null);
 
+            DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+
             System.out.println("Cow #" + tagNo);
             System.out.println("Gender: " + cow.getGender());
-            System.out.println("Date of birth: " + cow.getDateOfBirth().toString());
+            System.out.println("Date of birth: " + cow.getDateOfBirth().format(dateFormat));
             System.out.println("Purchase Status: " + (cow.getPurchased() ? "Purchased" : "Farm-rising"));
 
         }else{
@@ -305,9 +322,12 @@ public class FarmMe {
         if(vets.stream().anyMatch(c -> c.getVetID() == vetId)){
             Veterinary vet = vets.stream().filter(c -> c.getVetID() == vetId).findFirst().orElse(null);
 
+            DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+
             System.out.println("Vet #" + vetId);
             System.out.println("Gender: " + vet.getGender());
-            System.out.println("Date of birth: " + vet.getDateOfBirth().toString());
+            System.out.println("Date of birth: " + vet.getDateOfBirth().format(dateFormat));
             System.out.println("Salary: $" + vet.getSalary());
 
         }else{
@@ -332,6 +352,7 @@ public class FarmMe {
 
         if(!cows.stream().anyMatch(c -> c.getTagNo() == tagNo)){
             System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+            return;
         }
 
         Cow cow = cows.stream().filter(v -> v.getTagNo() == tagNo).findFirst().orElse(null);
@@ -424,9 +445,15 @@ public class FarmMe {
 
     }
 
+    /**
+     * Get cow treatment.
+     *
+     * @param tagNo the tag no
+     */
     public void getCowTreatment(int tagNo){
         if(!cows.stream().anyMatch(c -> c.getTagNo() == tagNo)){
             System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+            return;
         }
 
         Cow cow = cows.stream().filter(v -> v.getTagNo() == tagNo).findFirst().orElse(null);
@@ -436,12 +463,14 @@ public class FarmMe {
             return;
         }
 
+        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
         int counter = 1;
         for (Treatment treatment: cow.getTreatments()) {
             System.out.println("Treatment #" + counter);
-            System.out.println("Date of treatment: " + treatment.getDateOfTreatment());
+            System.out.println("Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
             System.out.println("Details: " + treatment.getDetails());
-            System.out.println("Treatment given by: " + treatment.getVet());
+            System.out.println("Treatment given by: Vet#" + treatment.getVet().getVetID());
 
             System.out.println("Medications:");
 
@@ -451,7 +480,7 @@ public class FarmMe {
                 System.out.println("\nMedication #" + medCount);
                 System.out.println("Details: " + medication.getDetails());
                 System.out.println("Duration: " + medication.getDuration());
-                System.out.println("Start Date: " + medication.getStartDate().toString());
+                System.out.println("Start Date: " + medication.getStartDate().format(dateFormat));
                 System.out.println("Dosage: " + medication.getDosage());
                 System.out.println("Notes: " + medication.getNotes());
 
@@ -462,6 +491,19 @@ public class FarmMe {
 
             counter++;
         }
+    }
+
+    public void listCow(){
+
+    }
+
+    public void listVet(){
+
+    }
+
+    public void exit(){
+        System.out.println("Goodbye!");
+        System.exit(0);
     }
 
     /**

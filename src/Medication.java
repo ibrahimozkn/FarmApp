@@ -11,6 +11,15 @@ public class Medication {
     private String notes;
 
 
+    /**
+     * Instantiates a new Medication.
+     *
+     * @param details   the details
+     * @param duration  the duration
+     * @param startDate the start date
+     * @param dosage    the dosage
+     * @param notes     the notes
+     */
     public Medication(String details, int duration, LocalDate startDate, double dosage, String notes){
         this.details = details;
         this.duration = duration;

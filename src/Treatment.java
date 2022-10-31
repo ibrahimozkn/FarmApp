@@ -11,7 +11,13 @@ public class Treatment {
     private ArrayList<Medication> medications;
 
 
-
+    /**
+     * Instantiates a new Treatment.
+     *
+     * @param dateOfTreatment the date of treatment
+     * @param details         the details
+     * @param vet             the vet
+     */
     public Treatment(LocalDate dateOfTreatment, String details, Veterinary vet){
         this.dateOfTreatment = dateOfTreatment;
         this.details = details;
@@ -19,6 +25,14 @@ public class Treatment {
         this.medications = new ArrayList<Medication>();
     }
 
+    /**
+     * Instantiates a new Treatment.
+     *
+     * @param dateOfTreatment the date of treatment
+     * @param details         the details
+     * @param vet             the vet
+     * @param medications     the medications
+     */
     public Treatment(LocalDate dateOfTreatment, String details, Veterinary vet, ArrayList<Medication> medications){
         this.dateOfTreatment = dateOfTreatment;
         this.details = details;
@@ -53,10 +67,20 @@ public class Treatment {
         this.dateOfTreatment = dateOfTreatment;
     }
 
+    /**
+     * Gets medications.
+     *
+     * @return the medications
+     */
     public ArrayList<Medication> getMedications() {
         return medications;
     }
 
+    /**
+     * Gets vet.
+     *
+     * @return the vet
+     */
     public Veterinary getVet() {
         return vet;
     }
@@ -70,10 +94,20 @@ public class Treatment {
         this.details = details;
     }
 
+    /**
+     * Given by.
+     *
+     * @param vet the vet
+     */
     public void givenBy(Veterinary vet){
         this.vet = vet;
     }
 
+    /**
+     * Has medication.
+     *
+     * @param medication the medication
+     */
     public void hasMedication(Medication medication){
         medications.add(medication);
     }
