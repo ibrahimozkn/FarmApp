@@ -19,8 +19,8 @@ public class PopulateData {
         ArrayList<Veterinary> vets = new ArrayList<Veterinary>();
 
         vets.add(new Veterinary(1, "female", LocalDate.of(1997, 5, 7), 2500.0));
-        vets.add(new Veterinary(1, "male", LocalDate.of(1998, 12, 27), 2700.0));
-        vets.add(new Veterinary(1, "female", LocalDate.of(1999, 8, 20), 1500.0));
+        vets.add(new Veterinary(2, "male", LocalDate.of(1998, 12, 27), 2700.0));
+        vets.add(new Veterinary(3, "female", LocalDate.of(1999, 8, 20), 1500.0));
 
         Treatment treatment1 = new Treatment(LocalDate.of(2022, 7, 5), "Treatment detail 1", vets.get(2));
         treatment1.hasMedication(new Medication("Medication detail 1", 100, LocalDate.of(2021, 5, 18), 1.2, "Medication notes 1"));

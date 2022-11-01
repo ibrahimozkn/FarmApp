@@ -114,11 +114,31 @@ public class FarmMe {
                     tagNo = userInput.nextInt();
                     userInput.nextLine();
 
-                    getCowTreatment(tagNo);
+                    try{
+                        System.out.println("Please enter date of treatment (leave empty if no date): ");
+                        String dateRaw = userInput.nextLine();
+
+                        if(dateRaw.isEmpty() || dateRaw.isBlank()){
+                            getCowTreatment(tagNo);
+                            break;
+                        }
+
+                        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+                        LocalDate date = LocalDate.parse(dateRaw, dateFormat);
+
+                        getCowTreatment(tagNo, date);
+
+                    }catch (Exception e){
+                        System.out.println("Invalid date");
+                        break;
+                    }
+
                     break;
                 case 9:
+                    listCow();
                     break;
                 case 10:
+                    listVet();
                     break;
                 case 11:
                     exit();
@@ -152,9 +172,13 @@ public class FarmMe {
         }
 
 
-        if(this.cows.stream().anyMatch(x -> x.getTagNo() == tagNo)){
-            System.out.println("Cow with this tagNo already exists");
-            return;
+        for (Cow cow:
+             cows) {
+            if(cow.getTagNo() == tagNo){
+                System.out.println("Cow with this tagNo already exists");
+                return;
+            }
+
         }
 
 
@@ -208,11 +232,18 @@ public class FarmMe {
      * @param tagNo the tag no
      */
     public void deleteCow(int tagNo){
-        if(this.cows.removeIf(c -> c.getTagNo() == tagNo)){
-            System.out.println("Cow with tagNo " + tagNo + " deleted successfully");
-        }else{
-            System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+        for (Cow cow:
+             this.cows) {
+            if(cow.getTagNo() == tagNo){
+                cows.remove(cow);
+                System.out.println("Cow with tagNo " + tagNo + " deleted successfully");
+                return;
+            }
+
         }
+
+        System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+
     }
 
     /**
@@ -221,20 +252,24 @@ public class FarmMe {
      * @param tagNo the tag no
      */
     public void getCowDetails(int tagNo){
-        if(cows.stream().anyMatch(c -> c.getTagNo() == tagNo)){
-            Cow cow = cows.stream().filter(c -> c.getTagNo() == tagNo).findFirst().orElse(null);
-
-            DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
 
-            System.out.println("Cow #" + tagNo);
-            System.out.println("Gender: " + cow.getGender());
-            System.out.println("Date of birth: " + cow.getDateOfBirth().format(dateFormat));
-            System.out.println("Purchase Status: " + (cow.getPurchased() ? "Purchased" : "Farm-rising"));
+        for (Cow cow:
+             this.cows) {
+            if(cow.getTagNo() == tagNo){
+                DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
-        }else{
-            System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+
+                System.out.println("Cow #" + tagNo);
+                System.out.println("    Gender: " + cow.getGender());
+                System.out.println("    Date of birth: " + cow.getDateOfBirth().format(dateFormat));
+                System.out.println("    Purchase Status: " + (cow.getPurchased() ? "Purchased" : "Farm-rising"));
+                return;
+            }
         }
+
+        System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+
     }
 
 
@@ -257,10 +292,14 @@ public class FarmMe {
         }
 
 
-        if(this.vets.stream().anyMatch(x -> x.getVetID() == vetId)){
-            System.out.println("Vet with this vetId already exists");
-            return;
+        for (Veterinary vetTemp:
+             this.vets) {
+            if(vetTemp.getVetID() == vetId){
+                System.out.println("Vet with this vetId already exists");
+                return;
+            }
         }
+
 
 
         String gender;
@@ -306,11 +345,17 @@ public class FarmMe {
      * @param vetID the vet id
      */
     public void deleteVet(int vetID){
-        if(this.vets.removeIf(c -> c.getVetID() == vetID)){
-            System.out.println("Vet with tagNo " + vetID + " deleted successfully");
-        }else{
-            System.out.println("Vet with tagNo " + vetID + " doesn't exist");
+        for (Veterinary vetTemp:
+                this.vets) {
+            if(vetTemp.getVetID() == vetID){
+                vets.remove(vetTemp);
+                System.out.println("Vet with tagNo " + vetID + " deleted successfully");
+                return;
+            }
         }
+
+        System.out.println("Vet with tagNo " + vetID + " doesn't exist");
+
     }
 
     /**
@@ -319,20 +364,26 @@ public class FarmMe {
      * @param vetId the vet id
      */
     public void getVetDetails(int vetId){
-        if(vets.stream().anyMatch(c -> c.getVetID() == vetId)){
-            Veterinary vet = vets.stream().filter(c -> c.getVetID() == vetId).findFirst().orElse(null);
 
-            DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+        for (Veterinary vet:
+             vets) {
+            if(vet.getVetID() == vetId){
+                DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
 
-            System.out.println("Vet #" + vetId);
-            System.out.println("Gender: " + vet.getGender());
-            System.out.println("Date of birth: " + vet.getDateOfBirth().format(dateFormat));
-            System.out.println("Salary: $" + vet.getSalary());
-
-        }else{
-            System.out.println("Vet with vetID " + vetId + " doesn't exist");
+                System.out.println("Vet #" + vetId);
+                System.out.println("    Gender: " + vet.getGender());
+                System.out.println("    Date of birth: " + vet.getDateOfBirth().format(dateFormat));
+                System.out.println("    Salary: $" + vet.getSalary());
+                return;
+            }
         }
+
+
+        System.out.println("Vet with vetID " + vetId + " doesn't exist");
+
+
+
     }
 
     /**
@@ -342,21 +393,36 @@ public class FarmMe {
      * @param tagNo the tag no
      */
     public void addTreatment(int vetID, int tagNo){
+        Veterinary vet = null;
 
-        if(!vets.stream().anyMatch(c -> c.getVetID() == vetID)){
+        for (Veterinary vetTemp:
+                this.vets) {
+            if(vetTemp.getVetID() == vetID){
+                vet = vetTemp;
+                break;
+            }
+        }
+
+        if(vet == null){
             System.out.println("Vet with vetID " + vetID + " doesn't exist");
             return;
         }
 
-        Veterinary vet = vets.stream().filter(v -> v.getVetID() == vetID).findFirst().orElse(null);
+        Cow cow = null;
 
-        if(!cows.stream().anyMatch(c -> c.getTagNo() == tagNo)){
+        for (Cow cowTemp:
+                this.cows) {
+            if(cowTemp.getTagNo() == tagNo){
+                cow = cowTemp;
+                break;
+            }
+
+        }
+
+        if(cow == null){
             System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
             return;
         }
-
-        Cow cow = cows.stream().filter(v -> v.getTagNo() == tagNo).findFirst().orElse(null);
-
 
         Scanner userInput = new Scanner(System.in);
 
@@ -430,11 +496,11 @@ public class FarmMe {
             System.out.println("Medication added successfully");
 
 
-            System.out.println("\nDo you want to add one more medication? (1) yes (0) no");
+            System.out.println("\nDo you want to stop adding medication and confirm treatment? Type (1) for yes");
             int addMed = userInput.nextInt();
             userInput.nextLine();
 
-            if(addMed == 0) break;
+            if(addMed == 1) break;
             counter++;
 
         }
@@ -451,12 +517,21 @@ public class FarmMe {
      * @param tagNo the tag no
      */
     public void getCowTreatment(int tagNo){
-        if(!cows.stream().anyMatch(c -> c.getTagNo() == tagNo)){
+
+        Cow cow = null;
+
+        for (Cow cowTemp:
+                this.cows) {
+            if(cowTemp.getTagNo() == tagNo){
+                cow = cowTemp;
+                break;
+            }
+
+        }
+        if(cow == null){
             System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
             return;
         }
-
-        Cow cow = cows.stream().filter(v -> v.getTagNo() == tagNo).findFirst().orElse(null);
 
         if(cow.getTreatments().isEmpty()){
             System.out.println("Cow has no treatments");
@@ -468,21 +543,88 @@ public class FarmMe {
         int counter = 1;
         for (Treatment treatment: cow.getTreatments()) {
             System.out.println("Treatment #" + counter);
-            System.out.println("Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
-            System.out.println("Details: " + treatment.getDetails());
-            System.out.println("Treatment given by: Vet#" + treatment.getVet().getVetID());
+            System.out.println("    Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
+            System.out.println("    Details: " + treatment.getDetails());
+            System.out.println("    Treatment given by: Vet#" + treatment.getVet().getVetID());
 
-            System.out.println("Medications:");
+            System.out.println("    Medications:");
 
             int medCount = 1;
             for (Medication medication:
                  treatment.getMedications()) {
-                System.out.println("\nMedication #" + medCount);
-                System.out.println("Details: " + medication.getDetails());
-                System.out.println("Duration: " + medication.getDuration());
-                System.out.println("Start Date: " + medication.getStartDate().format(dateFormat));
-                System.out.println("Dosage: " + medication.getDosage());
-                System.out.println("Notes: " + medication.getNotes());
+                System.out.println("\n      Medication #" + medCount);
+                System.out.println("            Details: " + medication.getDetails());
+                System.out.println("            Duration: " + medication.getDuration());
+                System.out.println("            Start Date: " + medication.getStartDate().format(dateFormat));
+                System.out.println("            Dosage: " + medication.getDosage());
+                System.out.println("            Notes: " + medication.getNotes());
+
+                medCount++;
+
+            }
+
+            System.out.println("\n");
+            counter++;
+        }
+    }
+
+    public void getCowTreatment(int tagNo, LocalDate dateOfTreatment){
+
+
+        Cow cow = null;
+
+        for (Cow cowTemp:
+                this.cows) {
+            if(cowTemp.getTagNo() == tagNo){
+                cow = cowTemp;
+                break;
+            }
+
+        }
+        if(cow == null){
+            System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+            return;
+        }
+
+        if(cow.getTreatments().isEmpty()){
+            System.out.println("Cow has no treatments");
+            return;
+        }
+
+        ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+
+        for (Treatment treatmentTemp:
+             cow.getTreatments()) {
+            if(treatmentTemp.getDateOfTreatment().equals(dateOfTreatment)){
+                treatments.add(treatmentTemp);
+            }
+        }
+
+        if(treatments.isEmpty()){
+            System.out.println("Cow has no treatments at that date");
+            return;
+        }
+
+        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+        int counter = 1;
+        for (Treatment treatment: treatments) {
+            System.out.println("Treatment #" + counter);
+            System.out.println("    Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
+            System.out.println("    Details: " + treatment.getDetails());
+            System.out.println("    Treatment given by: Vet#" + treatment.getVet().getVetID());
+
+            System.out.println("    Medications:");
+
+            int medCount = 1;
+            for (Medication medication:
+                    treatment.getMedications()) {
+                System.out.println("\n      Medication #" + medCount);
+                System.out.println("            Details: " + medication.getDetails());
+                System.out.println("            Duration: " + medication.getDuration());
+                System.out.println("            Start Date: " + medication.getStartDate().format(dateFormat));
+                System.out.println("            Dosage: " + medication.getDosage());
+                System.out.println("            Notes: " + medication.getNotes());
 
                 medCount++;
 
@@ -493,14 +635,42 @@ public class FarmMe {
         }
     }
 
+    /**
+     * List cow.
+     */
     public void listCow(){
+        System.out.println("All cows that are in the system: ");
 
+        for (Cow cow:
+             this.cows) {
+            System.out.println("Cow with tag number: " + cow.getTagNo());
+            System.out.println("    Gender: " + cow.getGender());
+            System.out.println("    Date of birth: " + cow.getDateOfBirth());
+            System.out.println("    Age: " + cow.getAge());
+            System.out.println("    Type: " + (cow.getPurchased() ? "Purchased" : "Farm-rising"));
+
+
+        }
     }
 
+    /**
+     * List vet.
+     */
     public void listVet(){
+        System.out.println("All vets that are in the system: ");
 
+        for (Veterinary vet:
+                this.vets) {
+            System.out.println("Vet with vet id: " + vet.getVetID());
+            System.out.println("    Gender: " + vet.getGender());
+            System.out.println("    Date of birth: " + vet.getDateOfBirth());
+            System.out.println("    Salary: $" + vet.getSalary());
+        }
     }
 
+    /**
+     * Exit.
+     */
     public void exit(){
         System.out.println("Goodbye!");
         System.exit(0);
