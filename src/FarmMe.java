@@ -12,7 +12,7 @@ import java.util.Scanner;
  * </ul>
  *
  * @author Ibrahim Ozkan
- * @version %I% %G%
+ * @version 1.0
  * @since 1.0
  */
 public class FarmMe {
@@ -34,7 +34,6 @@ public class FarmMe {
      * Main method that is executed when program runs.
      *
      * @param args the arguments in command line
-     * @since 1.0
      */
     public static void main(String[] args){
         FarmMe farm = PopulateData.populate();
@@ -56,7 +55,6 @@ public class FarmMe {
      *     <li>Exit</li>
      * </ul>
      *
-     * @since 1.0
      */
     public void menu(){
 
@@ -181,7 +179,6 @@ public class FarmMe {
     /**
      * First, collects data from the user about cow object. Then adds a new cow object to FarmMe's cow list.
      *
-     * @since 1.0
      */
     public void addCow(){
         Scanner userInput = new Scanner(System.in);
@@ -254,11 +251,10 @@ public class FarmMe {
     }
 
     /**
-     * Deletes cow object from the list of cows with the matching tagNo if exists. If cow with tag no doesnt exist
+     * Deletes cow object from the list of cows with the matching tagNo if exists. If cow with tag no doesn't exist
      * prints user an error message.
      *
      * @param tagNo tag number of the cow
-     * @since 1.0
      */
     public void deleteCow(int tagNo){
         for (Cow cow:
@@ -276,10 +272,9 @@ public class FarmMe {
     }
 
     /**
-     * Shows details of the cow with matching tagNo. If cow doesnt exist, method prints user an error message.
+     * Shows details of the cow with matching tagNo. If cow doesn't exist, method prints user an error message.
      *
      * @param tagNo the tag no
-     * @since 1.0
      */
     public void getCowDetails(int tagNo){
 
@@ -307,7 +302,6 @@ public class FarmMe {
     /**
      * First collects required data to create Veterinary object from the user, then adds new Veterinary object to the list of vets
      *
-     * @since 1.0
      */
     public void addVet(){
         Scanner userInput = new Scanner(System.in);
@@ -549,7 +543,7 @@ public class FarmMe {
     }
 
     /**
-     * Prints treatment details of the cow with it's medication details. If cow doesn't exist, it prints error message
+     * Prints treatment details of the cow with its medication details. If cow doesn't exist, it prints error message
      *
      * @param tagNo the tag no
      */
@@ -606,7 +600,7 @@ public class FarmMe {
     }
 
     /**
-     * Retrieves all treatments of a cow at a exact date that is given from the user. If cow or treatment doesn't exist, method prints an error message.
+     * Retrieves all treatments of a cow at an exact date that is given from the user. If cow or treatment doesn't exist, method prints an error message.
      *
      * @param tagNo           the tag no
      * @param dateOfTreatment the date of treatment

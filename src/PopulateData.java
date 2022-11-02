@@ -2,13 +2,19 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * The type Populate data.
+ * This class is used to populate FarmMe class
+ *
+ * @author Ibrahim Ozkan
+ * @version 1.0
+ * @since 1.0
+ *
  */
 public class PopulateData {
     /**
-     * Populate farm me.
+     * Populates farm me object with 3 cows and 3 vets where each cow has 1 treatment and each treatment has 1 medication.
      *
-     * @return the farm me
+     * @see FarmMe
+     * @return populated farmMe object
      */
     public static FarmMe populate(){
         ArrayList<Cow> cows = new ArrayList<Cow>();

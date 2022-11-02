@@ -2,7 +2,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * The type Treatment.
+ * This method represents treatment with medications used for a cow given by a vet.
+ *
+ * @author Ibrahim Ozkan
+ * @version 1.0
+ * @since 1.0
+ *
  */
 public class Treatment {
     private LocalDate dateOfTreatment;
@@ -68,44 +73,46 @@ public class Treatment {
     }
 
     /**
-     * Gets medications.
+     * Gets medications used in the treatment
      *
-     * @return the medications
+     * @return list of medications
      */
     public ArrayList<Medication> getMedications() {
         return medications;
     }
 
     /**
-     * Gets vet.
+     * Gets the vet who gave the treatment
      *
-     * @return the vet
+     * @return vet
      */
     public Veterinary getVet() {
         return vet;
     }
 
     /**
-     * Sets details.
+     * Sets details of the treatment
      *
-     * @param details the details
+     * @param details details of the treatment
      */
     public void setDetails(String details) {
         this.details = details;
     }
 
     /**
-     * Given by.
+     * Sets the vet who gave the treatment.
      *
-     * @param vet the vet
+     * @see Veterinary
+     * @param vet vet
      */
     public void givenBy(Veterinary vet){
         this.vet = vet;
     }
 
     /**
-     * Has medication.
+     * Adds used medication to the list of medications that are used in the treatment
      *
+     * @see Medication
      * @param medication the medication
      */
     public void hasMedication(Medication medication){

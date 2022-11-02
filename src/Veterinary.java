@@ -1,7 +1,11 @@
 import java.time.LocalDate;
 
 /**
- * The type Veterinary.
+ * This class represents vet.
+ *
+ * @author Ibrahim Ozkan
+ * @version 1.0
+ * @since 1.0
  */
 public class Veterinary {
     private int vetID;
@@ -40,36 +44,36 @@ public class Veterinary {
     }
 
     /**
-     * Gets vet id.
+     * Gets vet's id
      *
-     * @return the vet id
+     * @return identity number of the vet
      */
     public int getVetID() {
         return vetID;
     }
 
     /**
-     * Gets gender.
+     * Gets gender of the vet
      *
-     * @return the gender
+     * @return gender of the vet
      */
     public String getGender() {
         return gender;
     }
 
     /**
-     * Gets date of birth.
+     * Gets date of birth of the vet
      *
-     * @return the date of birth
+     * @return date of birth of the vet
      */
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
     /**
-     * Gets salary.
+     * Gets salary of the vet
      *
-     * @return the salary
+     * @return salary of the vet
      */
     public double getSalary() {
         return salary;
@@ -85,27 +89,27 @@ public class Veterinary {
     }
 
     /**
-     * Sets gender.
+     * Sets gender of the vet
      *
-     * @param gender the gender
+     * @param gender gender of the vet
      */
     public void setGender(String gender) {
         this.gender = gender;
     }
 
     /**
-     * Sets date of birth.
+     * Sets date of birth of the vet
      *
-     * @param dateOfBirth the date of birth
+     * @param dateOfBirth date of birth of the vet
      */
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
     /**
-     * Sets salary.
+     * Sets salary of the vet
      *
-     * @param salary the salary
+     * @param salary salary of the vet
      */
     public void setSalary(double salary) {
         this.salary = salary;
