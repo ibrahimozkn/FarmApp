@@ -5,33 +5,58 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * The type Farm me.
+ * FarmMe is the main class that whole FarmApp is operated. It stores some information about the farm such as
+ * <ul>
+ *     <li>List of cows</li>
+ *     <li>List of vets</li>
+ * </ul>
+ *
+ * @author Ibrahim Ozkan
+ * @version %I% %G%
+ * @since 1.0
  */
 public class FarmMe {
 
     /**
-     * The Cows.
+     * List of cows
+     *
+     * @see Cow
      */
     public ArrayList<Cow> cows;
     /**
-     * The Vets.
+     * List of vets
+     *
+     * @see Veterinary
      */
     public ArrayList<Veterinary> vets;
 
     /**
-     * Main.
+     * Main method that is executed when program runs.
      *
-     * @param args the args
+     * @param args the arguments in command line
+     * @since 1.0
      */
     public static void main(String[] args){
         FarmMe farm = PopulateData.populate();
-
-
         farm.menu();
     }
 
     /**
-     * Menu.
+     * Command Line interface that will be shown to the users in order to
+     * interact with the program. Users can select various options such as:
+     * <ul>
+     *     <li>Add a new cow</li>
+     *     <li>Delete a cow</li>
+     *     <li>Get cow details</li>
+     *     <li>Add a new vet</li>
+     *     <li>Get vet details</li>
+     *     <li>Add treatment</li>
+     *     <li>List cows</li>
+     *     <li>List vets</li>
+     *     <li>Exit</li>
+     * </ul>
+     *
+     * @since 1.0
      */
     public void menu(){
 
@@ -154,7 +179,9 @@ public class FarmMe {
     }
 
     /**
-     * Add cow.
+     * First, collects data from the user about cow object. Then adds a new cow object to FarmMe's cow list.
+     *
+     * @since 1.0
      */
     public void addCow(){
         Scanner userInput = new Scanner(System.in);
@@ -227,9 +254,11 @@ public class FarmMe {
     }
 
     /**
-     * Delete cow.
+     * Deletes cow object from the list of cows with the matching tagNo if exists. If cow with tag no doesnt exist
+     * prints user an error message.
      *
-     * @param tagNo the tag no
+     * @param tagNo tag number of the cow
+     * @since 1.0
      */
     public void deleteCow(int tagNo){
         for (Cow cow:
@@ -247,9 +276,10 @@ public class FarmMe {
     }
 
     /**
-     * Get cow details.
+     * Shows details of the cow with matching tagNo. If cow doesnt exist, method prints user an error message.
      *
      * @param tagNo the tag no
+     * @since 1.0
      */
     public void getCowDetails(int tagNo){
 
@@ -263,6 +293,7 @@ public class FarmMe {
                 System.out.println("Cow #" + tagNo);
                 System.out.println("    Gender: " + cow.getGender());
                 System.out.println("    Date of birth: " + cow.getDateOfBirth().format(dateFormat));
+                System.out.println("    Age: " + cow.getAge());
                 System.out.println("    Purchase Status: " + (cow.getPurchased() ? "Purchased" : "Farm-rising"));
                 return;
             }
@@ -274,7 +305,9 @@ public class FarmMe {
 
 
     /**
-     * Add vet.
+     * First collects required data to create Veterinary object from the user, then adds new Veterinary object to the list of vets
+     *
+     * @since 1.0
      */
     public void addVet(){
         Scanner userInput = new Scanner(System.in);
@@ -340,9 +373,10 @@ public class FarmMe {
     }
 
     /**
-     * Delete vet.
+     * Finds matching veterinary object with vetID and deletes from the vets list. If veterinary with the provided
+     * doesn't exist, it prints error message
      *
-     * @param vetID the vet id
+     * @param vetID vets identity number
      */
     public void deleteVet(int vetID){
         for (Veterinary vetTemp:
@@ -359,9 +393,10 @@ public class FarmMe {
     }
 
     /**
-     * Get vet details.
+     * Prints the details of the matching veterinary object with the provided vetid. If vet with given vetid
+     * doesn't exist error message is printed.
      *
-     * @param vetId the vet id
+     * @param vetId vet Id
      */
     public void getVetDetails(int vetId){
 
@@ -387,10 +422,12 @@ public class FarmMe {
     }
 
     /**
-     * Add treatment.
+     * Add treatment to a cow with given vet id and tag number. Also gets user input about medications that are involved in the treatment.
+     * If any of the provided veterinary object or cow object doesn't exist
+     * method prints an error message.
      *
-     * @param vetID the vet id
-     * @param tagNo the tag no
+     * @param vetID id number of the vet
+     * @param tagNo tag number of the cow
      */
     public void addTreatment(int vetID, int tagNo){
         Veterinary vet = null;
@@ -512,7 +549,7 @@ public class FarmMe {
     }
 
     /**
-     * Get cow treatment.
+     * Prints treatment details of the cow with it's medication details. If cow doesn't exist, it prints error message
      *
      * @param tagNo the tag no
      */
@@ -568,6 +605,12 @@ public class FarmMe {
         }
     }
 
+    /**
+     * Retrieves all treatments of a cow at a exact date that is given from the user. If cow or treatment doesn't exist, method prints an error message.
+     *
+     * @param tagNo           the tag no
+     * @param dateOfTreatment the date of treatment
+     */
     public void getCowTreatment(int tagNo, LocalDate dateOfTreatment){
 
 
@@ -636,16 +679,18 @@ public class FarmMe {
     }
 
     /**
-     * List cow.
+     * Lists all the cows that are found in the app with their details
      */
     public void listCow(){
+        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
         System.out.println("All cows that are in the system: ");
 
         for (Cow cow:
              this.cows) {
             System.out.println("Cow with tag number: " + cow.getTagNo());
             System.out.println("    Gender: " + cow.getGender());
-            System.out.println("    Date of birth: " + cow.getDateOfBirth());
+            System.out.println("    Date of birth: " + cow.getDateOfBirth().format(dateFormat));
             System.out.println("    Age: " + cow.getAge());
             System.out.println("    Type: " + (cow.getPurchased() ? "Purchased" : "Farm-rising"));
 
@@ -654,22 +699,23 @@ public class FarmMe {
     }
 
     /**
-     * List vet.
+     * Lists all the vets that are found in the app with their details
      */
     public void listVet(){
         System.out.println("All vets that are in the system: ");
+        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
         for (Veterinary vet:
                 this.vets) {
             System.out.println("Vet with vet id: " + vet.getVetID());
             System.out.println("    Gender: " + vet.getGender());
-            System.out.println("    Date of birth: " + vet.getDateOfBirth());
+            System.out.println("    Date of birth: " + vet.getDateOfBirth().format(dateFormat));
             System.out.println("    Salary: $" + vet.getSalary());
         }
     }
 
     /**
-     * Exit.
+     * Terminates the program
      */
     public void exit(){
         System.out.println("Goodbye!");
@@ -677,7 +723,7 @@ public class FarmMe {
     }
 
     /**
-     * Instantiates a new Farm me.
+     * Instantiates a new Farm me with empty cow and vet list
      */
     public FarmMe(){
         this.cows = new ArrayList<Cow>();
@@ -685,9 +731,9 @@ public class FarmMe {
     }
 
     /**
-     * Instantiates a new Farm me.
+     * Instantiates a new Farm me with cow list and empty vet list
      *
-     * @param cows the cows
+     * @param cows list of the cows
      */
     public FarmMe(ArrayList<Cow> cows){
         this.cows = new ArrayList<Cow>(cows);
@@ -695,10 +741,10 @@ public class FarmMe {
     }
 
     /**
-     * Instantiates a new Farm me.
+     * Instantiates a new Farm me with cow and vet list
      *
-     * @param cows the cows
-     * @param vets the vets
+     * @param cows list of the cows
+     * @param vets list of the vets
      */
     public FarmMe(ArrayList<Cow> cows, ArrayList<Veterinary> vets){
         this.cows = new ArrayList<Cow>(cows);
