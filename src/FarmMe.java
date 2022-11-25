@@ -381,24 +381,32 @@ public class FarmMe {
             return;
         }
 
-        int hasDegree;
+        int hasDegree = -1;
 
         do {
-            System.out.println("Enter if vet has BSc Degree (1 yes, 0 for no): ");
-            hasDegree = userInput.nextInt();
-            userInput.nextLine();
+            try{
+                System.out.println("Enter if vet has BSc Degree (1 yes, 0 for no): ");
+                hasDegree = userInput.nextInt();
+                userInput.nextLine();
+            }catch (Exception ex){
+                System.out.println("Please enter valid degree option");
+            }
+
         }while (hasDegree != 1 && hasDegree != 0);
 
         int expertiseLevel;
 
-        System.out.println("Enter expertise level of the vet: ");
-        expertiseLevel = userInput.nextInt();
+        try{
+            System.out.println("Enter expertise level of the vet: ");
+            expertiseLevel = userInput.nextInt();
+        }catch (Exception ex){
+            System.out.println("Please enter proper level (integer values)");
+            return;
+        }
+
 
         userInput.nextLine();
 
-        /*System.out.println("Enter salary of the vet: ");
-        double salary = userInput.nextDouble();
-        userInput.nextLine();*/
 
         this.employees.add(new Veterinary(vetId, gender, date, hasDegree == 1 ? true : false, dateofGrad, expertiseLevel));
         System.out.println("Vet added successfully!\n");
@@ -442,7 +450,9 @@ public class FarmMe {
                 System.out.println("Vet #" + vetId);
                 System.out.println("    Gender: " + vet.getGender());
                 System.out.println("    Date of birth: " + vet.getDateOfBirth().format(dateFormat));
-                System.out.println("    Salary: $" + vet.getSalary());
+                System.out.println("    Has BSc Degree: $" + ((Veterinary) vet).getBScDegree());
+                System.out.println("    Date of graduation: $" + ((Veterinary) vet).getDateOfGraduation().format(dateFormat));
+                System.out.println("    Expertise level: $" + ((Veterinary) vet).getExpertiseLevel());
                 return;
             }
         }
@@ -462,44 +472,56 @@ public class FarmMe {
      * @param vetID id number of the vet
      * @param tagNo tag number of the cow
      */
-    public void addTreatment(int vetID, int tagNo){
-        Veterinary vet = null;
+    public void addTreatment(int empID, int tagNo){
+        Employee employee = null;
 
-        for (Veterinary vetTemp:
+        for (Employee empTemp:
                 this.employees) {
-            if(vetTemp.getVetID() == vetID){
-                vet = vetTemp;
+            if(empTemp.getEmpID() == empID){
+                employee = empTemp;
                 break;
             }
         }
 
-        if(vet == null){
-            System.out.println("Vet with vetID " + vetID + " doesn't exist");
+        if(employee == null){
+            System.out.println("Employee with id " + empID + " doesn't exist");
             return;
         }
 
-        Cow cow = null;
+        Animal animal = null;
 
-        for (Cow cowTemp:
+        for (Animal animalTemp:
                 this.animals) {
-            if(cowTemp.getTagNo() == tagNo){
-                cow = cowTemp;
+            if(animalTemp.getTagNo() == tagNo){
+                animal = animalTemp;
                 break;
             }
 
         }
 
-        if(cow == null){
-            System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+        if(animal == null){
+            System.out.println("Animal with tagNo " + tagNo + " doesn't exist");
             return;
         }
 
         Scanner userInput = new Scanner(System.in);
 
 
+        System.out.println("Please enter (1) for Cleaning (2) for Health related treatment: ");
+        int treatmentType;
+
+        try{
+            treatmentType = userInput.nextInt();
+            userInput.nextLine();
+        }catch (Exception e){
+            System.out.println("Invalid treatment option");
+            return;
+        }
+
         LocalDate date;
 
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
 
 
         while (true){
@@ -516,67 +538,109 @@ public class FarmMe {
                 continue;
             }
         }
+/*
+        Treatment treatment;
 
-        System.out.println("Please enter details of treatment");
-        String details = userInput.nextLine();
+        if(treatmentType == 1){
+            treatment = new CleaningTreatment();
+        }else if(treatmentType == 2){
+            treatment = new HealthTreatment();
+        }else{
+            System.out.println("Invalid treatment option");
+            return;
+        }*/
 
 
 
-        System.out.println("Please enter medication details of the treatment");
+        if(treatmentType == 1){
+            String materialsUsed;
+
+            System.out.println("Please enter materials used for the treatment: ");
+            materialsUsed = userInput.nextLine();
+
+            CleaningTreatment cleaningTreatment = new CleaningTreatment(date, materialsUsed);
+
+            cleaningTreatment.cGivenBy((FarmWorker) employee);
+
+            animal.hasTreatment(cleaningTreatment);
+
+        }else if(treatmentType == 2){
+            int emergency;
 
 
-        Treatment treatment = new Treatment(date, details, vet);
 
-        int counter = 1;
-        while (true){
-            System.out.println("Medication #" + counter);
-            System.out.println("Please enter details of the medication");
-            String medDetails = userInput.nextLine();
+            System.out.println("Please enter (1) for Emergency (0) for Not Emergency: ");
 
-            System.out.println("Please enter the duration of medication");
-            int duration = userInput.nextInt();
-            userInput.nextLine();
-
-            LocalDate startDate;
-
-            while (true){
-                try{
-                    System.out.println("Enter start date of medication (dd/mm/yyyy): ");
-                    String dateRaw = userInput.nextLine();
-
-                    startDate = LocalDate.parse(dateRaw, dateFormat);
-                    System.out.println(startDate.toString());
-                    break;
-
-                }catch (Exception e){
-                    System.out.println("Invalid date, correct format (dd/mm/yyyy)");
-                    continue;
-                }
+            try{
+                emergency = userInput.nextInt();
+                userInput.nextLine();
+            }catch (Exception e){
+                System.out.println("Invalid treatment option");
+                return;
             }
 
-            System.out.println("Please enter the dosage of medication");
-            double dosage = userInput.nextDouble();
-            userInput.nextLine();
 
-            System.out.println("Please enter the notes of medication");
-            String notes = userInput.nextLine();
+            HealthTreatment healthTreatment = new HealthTreatment(date, emergency == 1 ? true : false);
 
 
-            treatment.hasMedication(new Medication(medDetails, duration, startDate, dosage, notes));
-            System.out.println("Medication added successfully");
+            healthTreatment.hGivenBy((Veterinary) employee);
+
+            int counter = 1;
+            while (true){
+                System.out.println("Medication #" + counter);
+                System.out.println("Please enter details of the medication");
+                String medDetails = userInput.nextLine();
+
+                System.out.println("Please enter the duration of medication");
+                int duration = userInput.nextInt();
+                userInput.nextLine();
+
+                LocalDate startDate;
+
+                while (true){
+                    try{
+                        System.out.println("Enter start date of medication (dd/mm/yyyy): ");
+                        String dateRaw = userInput.nextLine();
+
+                        startDate = LocalDate.parse(dateRaw, dateFormat);
+                        System.out.println(startDate.toString());
+                        break;
+
+                    }catch (Exception e){
+                        System.out.println("Invalid date, correct format (dd/mm/yyyy)");
+                        continue;
+                    }
+                }
+
+                System.out.println("Please enter the dosage of medication");
+                double dosage = userInput.nextDouble();
+                userInput.nextLine();
+
+                System.out.println("Please enter the notes of medication");
+                String notes = userInput.nextLine();
 
 
-            System.out.println("\nDo you want to stop adding medication and confirm treatment? Type (1) for yes");
-            int addMed = userInput.nextInt();
-            userInput.nextLine();
+                healthTreatment.addMedication(new Medication(medDetails, duration, startDate, dosage, notes));
+                System.out.println("Medication added successfully");
 
-            if(addMed == 1) break;
-            counter++;
 
+                System.out.println("\nDo you want to stop adding medication and confirm treatment? Type (1) for yes");
+                int addMed = userInput.nextInt();
+                userInput.nextLine();
+
+                if(addMed == 1) break;
+                counter++;
+
+            }
+            animal.hasTreatment(healthTreatment);
+
+
+        }else{
+            System.out.println("Invalid treatment type");
+            return;
         }
 
-        cow.hasTreatment(treatment);
-        System.out.println("Treatment is added to cow with tagNo " + tagNo + " successfully");
+        System.out.println("Treatment is added to animal with tagNo " + tagNo + " successfully");
 
 
     }
@@ -590,10 +654,10 @@ public class FarmMe {
 
         Cow cow = null;
 
-        for (Cow cowTemp:
+        for (Animal cowTemp:
                 this.animals) {
-            if(cowTemp.getTagNo() == tagNo){
-                cow = cowTemp;
+            if(cowTemp.getTagNo() == tagNo && cowTemp instanceof Cow){
+                cow = (Cow) cowTemp;
                 break;
             }
 
