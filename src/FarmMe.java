@@ -22,13 +22,14 @@ public class FarmMe {
      *
      * @see Cow
      */
-    public ArrayList<Cow> cows;
+    public ArrayList<Animal> animals;
+
     /**
      * List of vets
      *
      * @see Veterinary
      */
-    public ArrayList<Veterinary> vets;
+    public ArrayList<Employee> employees;
 
     /**
      * Main method that is executed when program runs.
@@ -196,10 +197,10 @@ public class FarmMe {
         }
 
 
-        for (Cow cow:
-             cows) {
-            if(cow.getTagNo() == tagNo){
-                System.out.println("Cow with this tagNo already exists");
+        for (Animal animal:
+                animals) {
+            if(animal.getTagNo() == tagNo){
+                System.out.println("Animal with this tagNo already exists");
                 return;
             }
 
@@ -243,7 +244,15 @@ public class FarmMe {
         }while (purchasedInt != 1 && purchasedInt != 0);
 
 
-        this.cows.add(new Cow(tagNo, gender, date, purchasedInt == 1));
+
+        double weight;
+
+        System.out.println("Please enter the weight of the cow: ");
+        weight = userInput.nextDouble();
+        userInput.nextLine();
+
+
+        this.animals.add(new Cow(tagNo, gender, date, purchasedInt == 1, weight));
 
         System.out.println("\nCow with tagNo " + tagNo + " added successfully");
 
@@ -257,10 +266,10 @@ public class FarmMe {
      * @param tagNo tag number of the cow
      */
     public void deleteCow(int tagNo){
-        for (Cow cow:
-             this.cows) {
-            if(cow.getTagNo() == tagNo){
-                cows.remove(cow);
+        for (Animal animal:
+             this.animals) {
+            if(animal.getTagNo() == tagNo && animal instanceof Cow){
+                animals.remove(animal);
                 System.out.println("Cow with tagNo " + tagNo + " deleted successfully");
                 return;
             }
@@ -279,17 +288,18 @@ public class FarmMe {
     public void getCowDetails(int tagNo){
 
 
-        for (Cow cow:
-             this.cows) {
-            if(cow.getTagNo() == tagNo){
+        for (Animal animal:
+             this.animals) {
+            if(animal.getTagNo() == tagNo && animal instanceof Cow){
                 DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
 
                 System.out.println("Cow #" + tagNo);
-                System.out.println("    Gender: " + cow.getGender());
-                System.out.println("    Date of birth: " + cow.getDateOfBirth().format(dateFormat));
-                System.out.println("    Age: " + cow.getAge());
-                System.out.println("    Purchase Status: " + (cow.getPurchased() ? "Purchased" : "Farm-rising"));
+                System.out.println("    Gender: " + animal.getGender());
+                System.out.println("    Date of birth: " + animal.getDateOfBirth().format(dateFormat));
+                System.out.println("    Age: " + animal.getAge());
+                System.out.println("    Purchase Status: " + (animal.getPurchased() ? "Purchased" : "Farm-rising"));
+                System.out.println("    Weight: " + ((Cow) animal).getWeight());
                 return;
             }
         }
@@ -319,10 +329,10 @@ public class FarmMe {
         }
 
 
-        for (Veterinary vetTemp:
-             this.vets) {
-            if(vetTemp.getVetID() == vetId){
-                System.out.println("Vet with this vetId already exists");
+        for (Employee vetTemp:
+             this.employees) {
+            if(vetTemp.getEmpID() == vetId){
+                System.out.println("Employee with this vetId already exists");
                 return;
             }
         }
@@ -357,11 +367,40 @@ public class FarmMe {
             return;
         }
 
-        System.out.println("Enter salary of the vet: ");
-        double salary = userInput.nextDouble();
+        LocalDate dateofGrad;
+
+        try{
+            System.out.println("Enter vet's date of graduation (dd/mm/yyyy): ");
+            String dateRaw = userInput.nextLine();
+
+            dateofGrad = LocalDate.parse(dateRaw, dateFormat);
+            //System.out.println(date.toString());
+
+        }catch (Exception e){
+            System.out.println("Invalid date, correct format (dd/mm/yyyy)");
+            return;
+        }
+
+        int hasDegree;
+
+        do {
+            System.out.println("Enter if vet has BSc Degree (1 yes, 0 for no): ");
+            hasDegree = userInput.nextInt();
+            userInput.nextLine();
+        }while (hasDegree != 1 && hasDegree != 0);
+
+        int expertiseLevel;
+
+        System.out.println("Enter expertise level of the vet: ");
+        expertiseLevel = userInput.nextInt();
+
         userInput.nextLine();
 
-        this.vets.add(new Veterinary(vetId, gender, date, salary));
+        /*System.out.println("Enter salary of the vet: ");
+        double salary = userInput.nextDouble();
+        userInput.nextLine();*/
+
+        this.employees.add(new Veterinary(vetId, gender, date, hasDegree == 1 ? true : false, dateofGrad, expertiseLevel));
         System.out.println("Vet added successfully!\n");
 
     }
@@ -373,16 +412,16 @@ public class FarmMe {
      * @param vetID vets identity number
      */
     public void deleteVet(int vetID){
-        for (Veterinary vetTemp:
-                this.vets) {
-            if(vetTemp.getVetID() == vetID){
-                vets.remove(vetTemp);
+        for (Employee vetTemp:
+                this.employees) {
+            if(vetTemp.getEmpID() == vetID && vetTemp instanceof Veterinary){
+                employees.remove(vetTemp);
                 System.out.println("Vet with tagNo " + vetID + " deleted successfully");
                 return;
             }
         }
 
-        System.out.println("Vet with tagNo " + vetID + " doesn't exist");
+        System.out.println("Vet with empID " + vetID + " doesn't exist");
 
     }
 
@@ -394,9 +433,9 @@ public class FarmMe {
      */
     public void getVetDetails(int vetId){
 
-        for (Veterinary vet:
-             vets) {
-            if(vet.getVetID() == vetId){
+        for (Employee vet:
+                employees) {
+            if(vet.getEmpID() == vetId && vet instanceof Veterinary){
                 DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
 
@@ -427,7 +466,7 @@ public class FarmMe {
         Veterinary vet = null;
 
         for (Veterinary vetTemp:
-                this.vets) {
+                this.employees) {
             if(vetTemp.getVetID() == vetID){
                 vet = vetTemp;
                 break;
@@ -442,7 +481,7 @@ public class FarmMe {
         Cow cow = null;
 
         for (Cow cowTemp:
-                this.cows) {
+                this.animals) {
             if(cowTemp.getTagNo() == tagNo){
                 cow = cowTemp;
                 break;
@@ -552,7 +591,7 @@ public class FarmMe {
         Cow cow = null;
 
         for (Cow cowTemp:
-                this.cows) {
+                this.animals) {
             if(cowTemp.getTagNo() == tagNo){
                 cow = cowTemp;
                 break;
@@ -611,7 +650,7 @@ public class FarmMe {
         Cow cow = null;
 
         for (Cow cowTemp:
-                this.cows) {
+                this.animals) {
             if(cowTemp.getTagNo() == tagNo){
                 cow = cowTemp;
                 break;
@@ -681,7 +720,7 @@ public class FarmMe {
         System.out.println("All cows that are in the system: ");
 
         for (Cow cow:
-             this.cows) {
+             this.animals) {
             System.out.println("Cow with tag number: " + cow.getTagNo());
             System.out.println("    Gender: " + cow.getGender());
             System.out.println("    Date of birth: " + cow.getDateOfBirth().format(dateFormat));
@@ -700,7 +739,7 @@ public class FarmMe {
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
         for (Veterinary vet:
-                this.vets) {
+                this.employees) {
             System.out.println("Vet with vet id: " + vet.getVetID());
             System.out.println("    Gender: " + vet.getGender());
             System.out.println("    Date of birth: " + vet.getDateOfBirth().format(dateFormat));
@@ -720,8 +759,8 @@ public class FarmMe {
      * Instantiates a new Farm me with empty cow and vet list
      */
     public FarmMe(){
-        this.cows = new ArrayList<Cow>();
-        this.vets = new ArrayList<Veterinary>();
+        this.animals = new ArrayList<Cow>();
+        this.employees = new ArrayList<Veterinary>();
     }
 
     /**
@@ -730,8 +769,8 @@ public class FarmMe {
      * @param cows list of the cows
      */
     public FarmMe(ArrayList<Cow> cows){
-        this.cows = new ArrayList<Cow>(cows);
-        this.vets = new ArrayList<Veterinary>();
+        this.animals = new ArrayList<Cow>(cows);
+        this.employees = new ArrayList<Veterinary>();
     }
 
     /**
@@ -741,8 +780,8 @@ public class FarmMe {
      * @param vets list of the vets
      */
     public FarmMe(ArrayList<Cow> cows, ArrayList<Veterinary> vets){
-        this.cows = new ArrayList<Cow>(cows);
-        this.vets = new ArrayList<Veterinary>(vets);
+        this.animals = new ArrayList<Cow>(cows);
+        this.employees = new ArrayList<Veterinary>(vets);
     }
 
 

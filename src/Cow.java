@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class represents cow the animal which includes its basic informations and treatments
@@ -10,13 +11,26 @@ import java.util.ArrayList;
  * @since 1.0
  *
  */
-public class Cow {
-    private int tagNo;
-    private String gender;
-    private LocalDate dateOfBirth;
-    private boolean purchased;
-    private ArrayList<Treatment> treatments;
+public class Cow extends Animal{
+    private double weight;
 
+    public void feeding(){
+        if(this.getAge() < 3){
+            System.out.println("Cow with younger than 3 year old needs to be fed with grass");
+        }else if(this.getAge() > 5 && this.weight < 500){
+                    /*
+           needs Total mixed ration (TMR) is a diet that
+        includes hay, fermented grass (silage), maize silage and
+        high energy grains like brewers grains, soy bean, cotton
+        seed and citrus pulp.*/
+        }else if(this.getAge() > 10){
+            /*If a cow is older than 10 years old, it needs grains and oilseed
+            meals.*/
+        }else{
+            /*In all other cases, the cow needs be fed with grass and grains.*/
+        }
+
+    }
 
     /**
      * Instantiates a new Cow.
@@ -27,11 +41,22 @@ public class Cow {
      * @param purchased   the purchased
      */
     public Cow(int tagNo, String gender, LocalDate dateOfBirth, boolean purchased){
-        this.tagNo = tagNo;
-        this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
-        this.purchased = purchased;
-        this.treatments = new ArrayList<Treatment>();
+        this.setTagNo(tagNo);
+        this.setGender(gender);
+        this.setDateOfBirth(dateOfBirth);
+        this.setPurchased(purchased);
+        this.setTreatments(new ArrayList<Treatment>());
+        this.setMilking(new HashMap<LocalDate, Double>());
+    }
+
+    public Cow(int tagNo, String gender, LocalDate dateOfBirth, boolean purchased, double weight){
+        this.setTagNo(tagNo);
+        this.setGender(gender);
+        this.setDateOfBirth(dateOfBirth);
+        this.setPurchased(purchased);
+        this.setTreatments(new ArrayList<Treatment>());
+        this.setMilking(new HashMap<LocalDate, Double>());
+        this.weight = weight;
     }
 
     /**
@@ -41,110 +66,19 @@ public class Cow {
      * @param gender the gender
      */
     public Cow(int tagNo, String gender){
-        this.tagNo = tagNo;
-        this.gender = gender;
-        this.purchased = false;
-        this.dateOfBirth = LocalDate.now();
-        this.treatments = new ArrayList<Treatment>();
+        this.setTagNo(tagNo);
+        this.setGender(gender);
+        this.setDateOfBirth(LocalDate.now());
+        this.setPurchased(false);
+        this.setTreatments(new ArrayList<Treatment>());
+        this.setMilking(new HashMap<LocalDate, Double>());
     }
 
-
-    /**
-     * Calculates the age of the cow and returns the resulting number.
-     *
-     * @return age of the cow
-     */
-    public int getAge(){
-        return LocalDate.now().getYear() - dateOfBirth.getYear();
+    public double getWeight() {
+        return weight;
     }
 
-    /**
-     * Get tag number of the cow
-     *
-     * @return tag number of the cow
-     */
-    public int getTagNo(){
-        return this.tagNo;
-    }
-
-    /**
-     * Get gender of the cow male or female.
-     *
-     * @return gender of the cow
-     */
-    public String getGender(){
-        return this.gender;
-    }
-
-    /**
-     * Get date of birth of the cow
-     *
-     * @return date of birth of the cow
-     */
-    public LocalDate getDateOfBirth(){
-        return this.dateOfBirth;
-    }
-
-    /**
-     * Get whether if cow is purchased or farm-rising
-     *
-     * @return farm -rising (false) or purchased (true)
-     */
-    public boolean getPurchased(){
-        return this.purchased;
-    }
-
-    /**
-     * Set tag number of the cow
-     *
-     * @param tagNo tag number of the cow
-     */
-    public void setTagNo(int tagNo){
-       this.tagNo = tagNo;
-    }
-
-    /**
-     * Sets gender of the cow.
-     *
-     * @param gender gender of the cow
-     */
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    /**
-     * Sets purchased status of the cow. True for purchased, false for farm-rising
-     *
-     * @param purchased purchased (true) or farm-rising (false)
-     */
-    public void setPurchased(boolean purchased) {
-        this.purchased = purchased;
-    }
-
-    /**
-     * Sets date of birth of the cow
-     *
-     * @param dateOfBirth date of birth of the cow
-     */
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    /**
-     * Adds treatment to a cow
-     *
-     * @param treatment treatment object
-     */
-    public void hasTreatment(Treatment treatment){
-        treatments.add(treatment);
-    }
-
-    /**
-     * Gets treatments of the cow
-     *
-     * @return list of treatment objects
-     */
-    public ArrayList<Treatment> getTreatments() {
-        return treatments;
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 }
