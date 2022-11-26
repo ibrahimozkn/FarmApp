@@ -37,7 +37,8 @@ public class FarmMe {
      * @param args the arguments in command line
      */
     public static void main(String[] args){
-        FarmMe farm = PopulateData.populate();
+        //FarmMe farm = PopulateData.populate();
+        FarmMe farm = new FarmMe();
         farm.menu();
     }
 
@@ -134,9 +135,15 @@ public class FarmMe {
 
                     break;
                 case 8:
-                    System.out.println("Please enter tagNo: ");
-                    tagNo = userInput.nextInt();
-                    userInput.nextLine();
+                    try {
+                        System.out.println("Please enter tagNo: ");
+                        tagNo = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid tag no");
+                        break;
+                    }
+
 
                     try{
                         System.out.println("Please enter date of treatment (leave empty if no date): ");
@@ -259,6 +266,78 @@ public class FarmMe {
 
     }
 
+
+    public void addSheep(){
+        Scanner userInput = new Scanner(System.in);
+
+        int tagNo;
+
+        try {
+            System.out.println("Enter sheep tagNo: ");
+            tagNo = userInput.nextInt();
+
+            userInput.nextLine();
+        }catch (Exception e){
+            System.out.println("Invalid tag number");
+            return;
+        }
+
+
+        for (Animal animal:
+                animals) {
+            if(animal.getTagNo() == tagNo){
+                System.out.println("Animal with this tagNo already exists");
+                return;
+            }
+
+        }
+
+
+        String gender;
+        System.out.println("Enter gender of the sheep (Male/Female): ");
+        gender = userInput.nextLine();
+
+
+        if(!(gender.equalsIgnoreCase("male") || gender.equalsIgnoreCase("female"))){
+            System.out.println("Invalid gender (male/female)");
+            return;
+        }
+
+
+        LocalDate date;
+
+        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+
+        try{
+            System.out.println("Enter sheep's date of birth (dd/mm/yyyy): ");
+            String dateRaw = userInput.nextLine();
+
+            date = LocalDate.parse(dateRaw, dateFormat);
+            System.out.println(date.toString());
+
+        }catch (Exception e){
+            System.out.println("Invalid date, correct format (dd/mm/yyyy)");
+            return;
+        }
+
+        int purchasedInt;
+
+        do {
+            System.out.println("Enter if sheep is purchased or farm-rising (1 for purchased, 0 for farm-rising): ");
+            purchasedInt = userInput.nextInt();
+            userInput.nextLine();
+        }while (purchasedInt != 1 && purchasedInt != 0);
+
+
+
+        this.animals.add(new Sheep(tagNo, gender, date, purchasedInt == 1));
+
+        System.out.println("\nSheep with tagNo " + tagNo + " added successfully");
+
+
+    }
+
     /**
      * Deletes cow object from the list of cows with the matching tagNo if exists. If cow with tag no doesn't exist
      * prints user an error message.
@@ -277,6 +356,21 @@ public class FarmMe {
         }
 
         System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+
+    }
+
+    public void deleteSheep(int tagNo){
+        for (Animal animal:
+                this.animals) {
+            if(animal.getTagNo() == tagNo && animal instanceof Sheep){
+                animals.remove(animal);
+                System.out.println("Sheep with tagNo " + tagNo + " deleted successfully");
+                return;
+            }
+
+        }
+
+        System.out.println("Sheep with tagNo " + tagNo + " doesn't exist");
 
     }
 
@@ -308,6 +402,28 @@ public class FarmMe {
 
     }
 
+
+    public void getSheepDetails(int tagNo){
+
+
+        for (Animal animal:
+                this.animals) {
+            if(animal.getTagNo() == tagNo && animal instanceof Sheep){
+                DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+
+                System.out.println("Sheep #" + tagNo);
+                System.out.println("    Gender: " + animal.getGender());
+                System.out.println("    Date of birth: " + animal.getDateOfBirth().format(dateFormat));
+                System.out.println("    Age: " + animal.getAge());
+                System.out.println("    Purchase Status: " + (animal.getPurchased() ? "Purchased" : "Farm-rising"));
+                return;
+            }
+        }
+
+        System.out.println("Sheep with tagNo " + tagNo + " doesn't exist");
+
+    }
 
     /**
      * First collects required data to create Veterinary object from the user, then adds new Veterinary object to the list of vets
@@ -408,7 +524,7 @@ public class FarmMe {
         userInput.nextLine();
 
 
-        this.employees.add(new Veterinary(vetId, gender, date, hasDegree == 1 ? true : false, dateofGrad, expertiseLevel));
+        this.employees.add(new Veterinary(vetId, gender, date, hasDegree == 1, dateofGrad, expertiseLevel));
         System.out.println("Vet added successfully!\n");
 
     }
@@ -469,7 +585,7 @@ public class FarmMe {
      * If any of the provided veterinary object or cow object doesn't exist
      * method prints an error message.
      *
-     * @param vetID id number of the vet
+     * @param empID id number of the vet
      * @param tagNo tag number of the cow
      */
     public void addTreatment(int empID, int tagNo){
@@ -492,7 +608,7 @@ public class FarmMe {
 
         for (Animal animalTemp:
                 this.animals) {
-            if(animalTemp.getTagNo() == tagNo){
+            if(animalTemp.getTagNo() == tagNo ){
                 animal = animalTemp;
                 break;
             }
@@ -518,6 +634,14 @@ public class FarmMe {
             return;
         }
 
+        if(treatmentType == 1 && !(employee instanceof FarmWorker)){
+            System.out.println("Employee for Cleaning Treatment needs to be a farm worker.");
+            return;
+        }else if(treatmentType == 1 && !(employee instanceof Veterinary)){
+            System.out.println("Employee for Health Treatment needs to be a vet.");
+            return;
+        }
+
         LocalDate date;
 
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
@@ -535,7 +659,6 @@ public class FarmMe {
 
             }catch (Exception e){
                 System.out.println("Invalid date, correct format (dd/mm/yyyy)");
-                continue;
             }
         }
 /*
@@ -580,7 +703,7 @@ public class FarmMe {
             }
 
 
-            HealthTreatment healthTreatment = new HealthTreatment(date, emergency == 1 ? true : false);
+            HealthTreatment healthTreatment = new HealthTreatment(date, emergency == 1);
 
 
             healthTreatment.hGivenBy((Veterinary) employee);//hi
@@ -608,7 +731,6 @@ public class FarmMe {
 
                     }catch (Exception e){
                         System.out.println("Invalid date, correct format (dd/mm/yyyy)");
-                        continue;
                     }
                 }
 
@@ -676,28 +798,98 @@ public class FarmMe {
 
         int counter = 1;
         for (Treatment treatment: cow.getTreatments()) {
-            System.out.println("Treatment #" + counter);
-            System.out.println("    Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
-            System.out.println("    Details: " + treatment.getDetails());
-            System.out.println("    Treatment given by: Vet#" + treatment.getVet().getVetID());
+            if(treatment instanceof HealthTreatment hTreatment){
+                System.out.println("Health Treatment #" + counter);
+                System.out.println("    Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
+                System.out.println("    Emergency: " + hTreatment.isEmergency());
+                System.out.println("    Treatment given by: Vet#" + hTreatment.getVet().getEmpID());
 
-            System.out.println("    Medications:");
+                System.out.println("    Medications:");
 
-            int medCount = 1;
-            for (Medication medication:
-                 treatment.getMedications()) {
-                System.out.println("\n      Medication #" + medCount);
-                System.out.println("            Details: " + medication.getDetails());
-                System.out.println("            Duration: " + medication.getDuration());
-                System.out.println("            Start Date: " + medication.getStartDate().format(dateFormat));
-                System.out.println("            Dosage: " + medication.getDosage());
-                System.out.println("            Notes: " + medication.getNotes());
+                int medCount = 1;
+                for (Medication medication:
+                        hTreatment.getMedications()) {
+                    System.out.println("\n      Medication #" + medCount);
+                    System.out.println("            Details: " + medication.getDetails());
+                    System.out.println("            Duration: " + medication.getDuration());
+                    System.out.println("            Start Date: " + medication.getStartDate().format(dateFormat));
+                    System.out.println("            Dosage: " + medication.getDosage());
+                    System.out.println("            Notes: " + medication.getNotes());
 
-                medCount++;
+                    medCount++;
 
+                }
+
+                System.out.println("\n");
+
+            }else if(treatment instanceof CleaningTreatment cTreatment){
+                System.out.println("Cleaning Treatment #" + counter);
+                System.out.println("    Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
+                System.out.println("    Materials used: " + cTreatment.getMaterialsUsed());
+                System.out.println("    Treatment given by: Farm Worker#" + cTreatment.getWorker().getEmpID());
             }
 
-            System.out.println("\n");
+            counter++;
+        }
+    }
+
+    public void getSheepTreatment(int tagNo){
+
+        Sheep sheep = null;
+
+        for (Animal sheepTemp:
+                this.animals) {
+            if(sheepTemp.getTagNo() == tagNo && sheepTemp instanceof Sheep){
+                sheep = (Sheep) sheepTemp;
+                break;
+            }
+
+        }
+        if(sheep == null){
+            System.out.println("Sheep with tagNo " + tagNo + " doesn't exist");
+            return;
+        }
+
+        if(sheep.getTreatments().isEmpty()){
+            System.out.println("Sheep has no treatments");
+            return;
+        }
+
+        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+        int counter = 1;
+        for (Treatment treatment: sheep.getTreatments()) {
+            if(treatment instanceof HealthTreatment hTreatment){
+                System.out.println("Health Treatment #" + counter);
+                System.out.println("    Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
+                System.out.println("    Emergency: " + hTreatment.isEmergency());
+                System.out.println("    Treatment given by: Vet#" + hTreatment.getVet().getEmpID());
+
+                System.out.println("    Medications:");
+
+                int medCount = 1;
+                for (Medication medication:
+                        hTreatment.getMedications()) {
+                    System.out.println("\n      Medication #" + medCount);
+                    System.out.println("            Details: " + medication.getDetails());
+                    System.out.println("            Duration: " + medication.getDuration());
+                    System.out.println("            Start Date: " + medication.getStartDate().format(dateFormat));
+                    System.out.println("            Dosage: " + medication.getDosage());
+                    System.out.println("            Notes: " + medication.getNotes());
+
+                    medCount++;
+
+                }
+
+                System.out.println("\n");
+
+            }else if(treatment instanceof CleaningTreatment cTreatment){
+                System.out.println("Cleaning Treatment #" + counter);
+                System.out.println("    Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
+                System.out.println("    Materials used: " + cTreatment.getMaterialsUsed());
+                System.out.println("    Treatment given by: Farm Worker#" + cTreatment.getWorker().getEmpID());
+            }
+
             counter++;
         }
     }
@@ -713,10 +905,10 @@ public class FarmMe {
 
         Cow cow = null;
 
-        for (Cow cowTemp:
+        for (Animal cowTemp:
                 this.animals) {
-            if(cowTemp.getTagNo() == tagNo){
-                cow = cowTemp;
+            if(cowTemp.getTagNo() == tagNo && cowTemp instanceof Cow){
+                cow = (Cow) cowTemp;
                 break;
             }
 
@@ -749,27 +941,112 @@ public class FarmMe {
 
         int counter = 1;
         for (Treatment treatment: treatments) {
-            System.out.println("Treatment #" + counter);
-            System.out.println("    Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
-            System.out.println("    Details: " + treatment.getDetails());
-            System.out.println("    Treatment given by: Vet#" + treatment.getVet().getVetID());
+            if(treatment instanceof HealthTreatment hTreatment){
+                System.out.println("Health Treatment #" + counter);
+                System.out.println("    Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
+                System.out.println("    Emergency: " + hTreatment.isEmergency());
+                System.out.println("    Treatment given by: Vet#" + hTreatment.getVet().getEmpID());
 
-            System.out.println("    Medications:");
+                System.out.println("    Medications:");
 
-            int medCount = 1;
-            for (Medication medication:
-                    treatment.getMedications()) {
-                System.out.println("\n      Medication #" + medCount);
-                System.out.println("            Details: " + medication.getDetails());
-                System.out.println("            Duration: " + medication.getDuration());
-                System.out.println("            Start Date: " + medication.getStartDate().format(dateFormat));
-                System.out.println("            Dosage: " + medication.getDosage());
-                System.out.println("            Notes: " + medication.getNotes());
+                int medCount = 1;
+                for (Medication medication:
+                        hTreatment.getMedications()) {
+                    System.out.println("\n      Medication #" + medCount);
+                    System.out.println("            Details: " + medication.getDetails());
+                    System.out.println("            Duration: " + medication.getDuration());
+                    System.out.println("            Start Date: " + medication.getStartDate().format(dateFormat));
+                    System.out.println("            Dosage: " + medication.getDosage());
+                    System.out.println("            Notes: " + medication.getNotes());
 
-                medCount++;
+                    medCount++;
 
+                }
+
+                System.out.println("\n");
+
+            }else if(treatment instanceof CleaningTreatment cTreatment){
+                System.out.println("Cleaning Treatment #" + counter);
+                System.out.println("    Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
+                System.out.println("    Materials used: " + cTreatment.getMaterialsUsed());
+                System.out.println("    Treatment given by: Farm Worker#" + cTreatment.getWorker().getEmpID());
             }
 
+            counter++;
+        }
+    }
+
+    public void getSheepTreatment(int tagNo, LocalDate dateOfTreatment){
+
+
+        Sheep sheep = null;
+
+        for (Animal sheepTemp:
+                this.animals) {
+            if(sheepTemp.getTagNo() == tagNo && sheepTemp instanceof Sheep){
+                sheep = (Sheep) sheepTemp;
+                break;
+            }
+
+        }
+        if(sheep == null){
+            System.out.println("Sheep with tagNo " + tagNo + " doesn't exist");
+            return;
+        }
+
+        if(sheep.getTreatments().isEmpty()){
+            System.out.println("Sheep has no treatments");
+            return;
+        }
+
+        ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+
+        for (Treatment treatmentTemp:
+                sheep.getTreatments()) {
+            if(treatmentTemp.getDateOfTreatment().equals(dateOfTreatment)){
+                treatments.add(treatmentTemp);
+            }
+        }
+
+        if(treatments.isEmpty()){
+            System.out.println("Sheep has no treatments at that date");
+            return;
+        }
+
+        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+        int counter = 1;
+        for (Treatment treatment: treatments) {
+            if(treatment instanceof HealthTreatment hTreatment){
+                System.out.println("Health Treatment #" + counter);
+                System.out.println("    Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
+                System.out.println("    Emergency: " + hTreatment.isEmergency());
+                System.out.println("    Treatment given by: Vet#" + hTreatment.getVet().getEmpID());
+
+                System.out.println("    Medications:");
+
+                int medCount = 1;
+                for (Medication medication:
+                        hTreatment.getMedications()) {
+                    System.out.println("\n      Medication #" + medCount);
+                    System.out.println("            Details: " + medication.getDetails());
+                    System.out.println("            Duration: " + medication.getDuration());
+                    System.out.println("            Start Date: " + medication.getStartDate().format(dateFormat));
+                    System.out.println("            Dosage: " + medication.getDosage());
+                    System.out.println("            Notes: " + medication.getNotes());
+
+                    medCount++;
+
+                }
+
+                System.out.println("\n");
+
+            }else if(treatment instanceof CleaningTreatment cTreatment){
+                System.out.println("Cleaning Treatment #" + counter);
+                System.out.println("    Date of treatment: " + treatment.getDateOfTreatment().format(dateFormat));
+                System.out.println("    Materials used: " + cTreatment.getMaterialsUsed());
+                System.out.println("    Treatment given by: Farm Worker#" + cTreatment.getWorker().getEmpID());
+            }
 
             counter++;
         }
@@ -783,13 +1060,37 @@ public class FarmMe {
 
         System.out.println("All cows that are in the system: ");
 
-        for (Cow cow:
+        for (Animal cow:
              this.animals) {
-            System.out.println("Cow with tag number: " + cow.getTagNo());
-            System.out.println("    Gender: " + cow.getGender());
-            System.out.println("    Date of birth: " + cow.getDateOfBirth().format(dateFormat));
-            System.out.println("    Age: " + cow.getAge());
-            System.out.println("    Type: " + (cow.getPurchased() ? "Purchased" : "Farm-rising"));
+            if(cow instanceof Cow){
+                System.out.println("Cow with tag number: " + cow.getTagNo());
+                System.out.println("    Gender: " + cow.getGender());
+                System.out.println("    Date of birth: " + cow.getDateOfBirth().format(dateFormat));
+                System.out.println("    Age: " + cow.getAge());
+                System.out.println("    Type: " + (cow.getPurchased() ? "Purchased" : "Farm-rising"));
+                System.out.println("    Weight: " + ((Cow) cow).getWeight());
+            }
+
+
+
+        }
+    }
+
+    public void listSheep(){
+        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+        System.out.println("All sheep that are in the system: ");
+
+        for (Animal sheep:
+                this.animals) {
+            if(sheep instanceof Sheep){
+                System.out.println("Sheep with tag number: " + sheep.getTagNo());
+                System.out.println("    Gender: " + sheep.getGender());
+                System.out.println("    Date of birth: " + sheep.getDateOfBirth().format(dateFormat));
+                System.out.println("    Age: " + sheep.getAge());
+                System.out.println("    Type: " + (sheep.getPurchased() ? "Purchased" : "Farm-rising"));
+            }
+
 
 
         }
@@ -802,12 +1103,17 @@ public class FarmMe {
         System.out.println("All vets that are in the system: ");
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
-        for (Veterinary vet:
+        for (Employee vet:
                 this.employees) {
-            System.out.println("Vet with vet id: " + vet.getVetID());
-            System.out.println("    Gender: " + vet.getGender());
-            System.out.println("    Date of birth: " + vet.getDateOfBirth().format(dateFormat));
-            System.out.println("    Salary: $" + vet.getSalary());
+            if(vet instanceof Veterinary){
+                System.out.println("Vet #" + vet.getEmpID());
+                System.out.println("    Gender: " + vet.getGender());
+                System.out.println("    Date of birth: " + vet.getDateOfBirth().format(dateFormat));
+                System.out.println("    Has BSc Degree: $" + ((Veterinary) vet).getBScDegree());
+                System.out.println("    Date of graduation: $" + ((Veterinary) vet).getDateOfGraduation().format(dateFormat));
+                System.out.println("    Expertise level: $" + ((Veterinary) vet).getExpertiseLevel());
+            }
+
         }
     }
 
@@ -823,29 +1129,42 @@ public class FarmMe {
      * Instantiates a new Farm me with empty cow and vet list
      */
     public FarmMe(){
-        this.animals = new ArrayList<Cow>();
-        this.employees = new ArrayList<Veterinary>();
+        this.animals = new ArrayList<Animal>();
+        this.employees = new ArrayList<Employee>();
     }
 
     /**
      * Instantiates a new Farm me with cow list and empty vet list
      *
-     * @param cows list of the cows
+     * @param animals list of the animals
      */
-    public FarmMe(ArrayList<Cow> cows){
-        this.animals = new ArrayList<Cow>(cows);
-        this.employees = new ArrayList<Veterinary>();
+    public FarmMe(ArrayList<Animal> animals){
+        this.animals = new ArrayList<Animal>(animals);
+        this.employees = new ArrayList<Employee>();
     }
 
     /**
      * Instantiates a new Farm me with cow and vet list
      *
-     * @param cows list of the cows
-     * @param vets list of the vets
+     * @param animals list of the animals
+     * @param employees list of the employees
      */
-    public FarmMe(ArrayList<Cow> cows, ArrayList<Veterinary> vets){
-        this.animals = new ArrayList<Cow>(cows);
-        this.employees = new ArrayList<Veterinary>(vets);
+    public FarmMe(ArrayList<Animal> animals, ArrayList<Employee> employees){
+        this.animals = new ArrayList<Animal>(animals);
+        this.employees = new ArrayList<Employee>(employees);
+    }
+
+
+
+    public FarmMe(ArrayList<Cow> cows, ArrayList<Animal> sheeps, ArrayList<Veterinary> vets, ArrayList<FarmWorker> farmWorkers){
+        this.animals = new ArrayList<Animal>();
+
+        this.animals.addAll(cows);
+        this.animals.addAll(sheeps);
+
+        this.employees = new ArrayList<Employee>();
+        this.employees.addAll(vets);
+        this.employees.addAll(farmWorkers);
     }
 
 
