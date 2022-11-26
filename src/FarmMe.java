@@ -944,7 +944,7 @@ public class FarmMe {
         if(treatmentType == 1 && !(employee instanceof FarmWorker)){
             System.out.println("Employee for Cleaning Treatment needs to be a farm worker.");
             return;
-        }else if(treatmentType == 1 && !(employee instanceof Veterinary)){
+        }else if(treatmentType == 2 && !(employee instanceof Veterinary)){
             System.out.println("Employee for Health Treatment needs to be a vet.");
             return;
         }
@@ -1548,19 +1548,6 @@ public class FarmMe {
     public FarmMe(ArrayList<Animal> animals, ArrayList<Employee> employees){
         this.animals = new ArrayList<Animal>(animals);
         this.employees = new ArrayList<Employee>(employees);
-    }
-
-
-
-    public FarmMe(ArrayList<Cow> cows, ArrayList<Animal> sheeps, ArrayList<Veterinary> vets, ArrayList<FarmWorker> farmWorkers){
-        this.animals = new ArrayList<Animal>();
-
-        this.animals.addAll(cows);
-        this.animals.addAll(sheeps);
-
-        this.employees = new ArrayList<Employee>();
-        this.employees.addAll(vets);
-        this.employees.addAll(farmWorkers);
     }
 
 
