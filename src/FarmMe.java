@@ -37,26 +37,13 @@ public class FarmMe {
      * @param args the arguments in command line
      */
     public static void main(String[] args){
-        //FarmMe farm = PopulateData.populate();
-        FarmMe farm = new FarmMe();
+        FarmMe farm = PopulateData.populate();
         farm.menu();
     }
 
     /**
      * Command Line interface that will be shown to the users in order to
-     * interact with the program. Users can select various options such as:
-     * <ul>
-     *     <li>Add a new cow</li>
-     *     <li>Delete a cow</li>
-     *     <li>Get cow details</li>
-     *     <li>Add a new vet</li>
-     *     <li>Get vet details</li>
-     *     <li>Add treatment</li>
-     *     <li>List cows</li>
-     *     <li>List vets</li>
-     *     <li>Exit</li>
-     * </ul>
-     *
+     * interact with the program.
      */
     public void menu(){
 
@@ -68,16 +55,28 @@ public class FarmMe {
             Scanner userInput = new Scanner(System.in);
 
             System.out.println("(1) Add a new cow");
-            System.out.println("(2) Delete a cow");
-            System.out.println("(3) Get cow details");
-            System.out.println("(4) Add a new vet");
-            System.out.println("(5) Delete a vet");
-            System.out.println("(6) Get vet details");
-            System.out.println("(7) Add treatment");
-            System.out.println("(8) Get cow treatment");
-            System.out.println("(9) List cows");
-            System.out.println("(10) List vets");
-            System.out.println("(11) Exit");
+            System.out.println("(2) Add a new sheep");
+            System.out.println("(3) Delete a cow");
+            System.out.println("(4) Delete a sheep");
+            System.out.println("(5) Get cow details");
+            System.out.println("(6) Get sheep details");
+            System.out.println("(7) Add a new vet");
+            System.out.println("(8) Add a new farm worker");
+            System.out.println("(9) Delete a vet");
+            System.out.println("(10) Delete a farm worker");
+            System.out.println("(11) Get vet details");
+            System.out.println("(12) Get farm worker details");
+            System.out.println("(13) Add treatment");
+            System.out.println("(14) Get cow treatment");
+            System.out.println("(15) Get sheep treatment");
+            System.out.println("(16) List cows");
+            System.out.println("(17) List sheep");
+            System.out.println("(18) List vets");
+            System.out.println("(19) List farm workers");
+            System.out.println("(20) Get feeding animal info");
+            System.out.println("(21) Get employee salary");
+            System.out.println("(22) Add milking measurement");
+            System.out.println("(23) Exit");
 
             System.out.println("\nEnter your option: ");
 
@@ -91,50 +90,153 @@ public class FarmMe {
                     addCow();
                     break;
                 case 2:
-                    System.out.println("Please enter tagNo of the cow you want to delete: ");
-                    tagNo = userInput.nextInt();
-                    userInput.nextLine();
+                    addSheep();
+                    break;
+                case 3:
+                    try {
+                        System.out.println("Please enter tagNo of the cow you want to delete: ");
+                        tagNo = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid tag number");
+                        break;
+                    }
+
 
                     deleteCow(tagNo);
 
                     break;
-                case 3:
-                    System.out.println("Please enter tagNo of the cow you want to see details: ");
-                    tagNo = userInput.nextInt();
-                    userInput.nextLine();
+                case 4:
+                    try {
+                        System.out.println("Please enter tagNo of the sheep you want to delete: ");
+                        tagNo = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid tag number");
+                        break;
+                    }
+
+
+                    deleteSheep(tagNo);
+
+                    break;
+                case 5:
+                    try {
+                        System.out.println("Please enter tagNo of the cow you want to see details: ");
+                        tagNo = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid tag number");
+                        break;
+                    }
+
 
                     getCowDetails(tagNo);
                     break;
-                case 4:
+                case 6:
+                    try {
+                        System.out.println("Please enter tagNo of the sheep you want to see details: ");
+                        tagNo = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid tag number");
+                        break;
+                    }
+
+
+                    getSheepDetails(tagNo);
+                    break;
+                case 7:
                     addVet();
                     break;
-                case 5:
-                    System.out.println("Please enter vetID of the vet you want to delete: ");
-                    vetId = userInput.nextInt();
-                    userInput.nextLine();
+                case 8:
+                    addFarmWorker();
+                    break;
+                case 9:
+
+                    try {
+                        System.out.println("Please enter empId of the vet you want to delete: ");
+                        vetId = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid employee id");
+                        break;
+                    }
+
+
 
                     deleteVet(vetId);
                     break;
-                case 6:
-                    System.out.println("Please enter vetID of the vet you want to see details: ");
-                    vetId = userInput.nextInt();
-                    userInput.nextLine();
+                case 10:
+
+                    try {
+                        System.out.println("Please enter empId of the farm worker you want to delete: ");
+                        vetId = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid employee id");
+                        break;
+                    }
+
+
+
+                    deleteFarmWorker(vetId);
+                    break;
+                case 11:
+
+                    try {
+                        System.out.println("Please enter vetID of the vet you want to see details: ");
+                        vetId = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid employee id");
+                        break;
+                    }
+
+
 
                     getVetDetails(vetId);
                     break;
-                case 7:
-                    System.out.println("Please enter vetID: ");
-                    vetId = userInput.nextInt();
-                    userInput.nextLine();
+                case 12:
 
-                    System.out.println("Please enter tagNo: ");
-                    tagNo = userInput.nextInt();
-                    userInput.nextLine();
+                    try {
+                        System.out.println("Please enter empId of the farm worker you want to see details: ");
+                        vetId = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid employee id");
+                        break;
+                    }
+
+
+
+                    getFarmWorkerDetails(vetId);
+                    break;
+                case 13:
+                    try {
+                        System.out.println("Please enter vetID: ");
+                        vetId = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid employee id");
+                        break;
+                    }
+
+                    try {
+                        System.out.println("Please enter tagNo: ");
+                        tagNo = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid tag number");
+                        break;
+                    }
+
+
 
                     addTreatment(vetId, tagNo);
 
                     break;
-                case 8:
+                case 14:
                     try {
                         System.out.println("Please enter tagNo: ");
                         tagNo = userInput.nextInt();
@@ -165,13 +267,101 @@ public class FarmMe {
                     }
 
                     break;
-                case 9:
+                case 15:
+                    try {
+                        System.out.println("Please enter tagNo: ");
+                        tagNo = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid tag no");
+                        break;
+                    }
+
+
+                    try{
+                        System.out.println("Please enter date of treatment (leave empty if no date): ");
+                        String dateRaw = userInput.nextLine();
+
+                        if(dateRaw.isEmpty() || dateRaw.isBlank()){
+                            getSheepTreatment(tagNo);
+                            break;
+                        }
+
+                        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+                        LocalDate date = LocalDate.parse(dateRaw, dateFormat);
+
+                        getSheepTreatment(tagNo, date);
+
+                    }catch (Exception e){
+                        System.out.println("Invalid date");
+                        break;
+                    }
+
+                    break;
+                case 16:
                     listCow();
                     break;
-                case 10:
+                case 17:
+                    listSheep();
+                    break;
+                case 18:
                     listVet();
                     break;
-                case 11:
+                case 19:
+                    listFarmWorker();
+                    break;
+                case 20:
+                    try {
+                        System.out.println("Please enter tagNo: ");
+                        tagNo = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid tag no");
+                        break;
+                    }
+
+                    feedingAnimal(tagNo);
+                    break;
+                case 21:
+                    try {
+                        System.out.println("Please enter empId: ");
+                        vetId = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid employee id");
+                        break;
+                    }
+
+                    double result = getEmpSalary(vetId);
+
+                    if(result != -1){
+                        System.out.println("Salary of employee is " + result + "$");
+                    }
+
+                    break;
+                case 22:
+                    try {
+                        System.out.println("Please enter tagNo: ");
+                        tagNo = userInput.nextInt();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid tag no");
+                        break;
+                    }
+
+                    double amount;
+                    try {
+                        System.out.println("Please enter amount: ");
+                        amount = userInput.nextDouble();
+                        userInput.nextLine();
+                    }catch (Exception e){
+                        System.out.println("Invalid amount");
+                        break;
+                    }
+
+                    addMilkingMeasurement(tagNo, amount);
+                    break;
+                case 23:
                     exit();
                     break;
                 default:
@@ -440,7 +630,7 @@ public class FarmMe {
 
             userInput.nextLine();
         }catch (Exception e){
-            System.out.println("Invalid tag number");
+            System.out.println("Invalid employee id");
             return;
         }
 
@@ -529,6 +719,85 @@ public class FarmMe {
 
     }
 
+    public void addFarmWorker(){
+        Scanner userInput = new Scanner(System.in);
+
+        int vetId;
+
+        try {
+            System.out.println("Enter empId: ");
+            vetId = userInput.nextInt();
+
+            userInput.nextLine();
+        }catch (Exception e){
+            System.out.println("Invalid employee id");
+            return;
+        }
+
+
+        for (Employee vetTemp:
+                this.employees) {
+            if(vetTemp.getEmpID() == vetId){
+                System.out.println("Employee with this vetId already exists");
+                return;
+            }
+        }
+
+
+
+        String gender;
+        System.out.println("Enter gender of the farm worker (Male/Female): ");
+        gender = userInput.nextLine();
+
+
+        if(!(gender.equalsIgnoreCase("male") || gender.equalsIgnoreCase("female"))){
+            System.out.println("Invalid gender (male/female)");
+            return;
+        }
+
+
+        LocalDate date;
+
+        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+
+        try{
+            System.out.println("Enter worker's date of birth (dd/mm/yyyy): ");
+            String dateRaw = userInput.nextLine();
+
+            date = LocalDate.parse(dateRaw, dateFormat);
+            System.out.println(date.toString());
+
+        }catch (Exception e){
+            System.out.println("Invalid date, correct format (dd/mm/yyyy)");
+            return;
+        }
+
+        String previousFarmName;
+
+        System.out.println("Enter previous farm name: ");
+        previousFarmName = userInput.nextLine();
+
+
+        int workExperience;
+
+        try{
+            System.out.println("Enter work experience: ");
+            workExperience = userInput.nextInt();
+        }catch (Exception ex){
+            System.out.println("Please enter proper experience (integer values)");
+            return;
+        }
+
+
+        userInput.nextLine();
+
+
+        this.employees.add(new FarmWorker(vetId, gender, date, previousFarmName, workExperience));
+        System.out.println("Farm Worker added successfully!\n");
+
+    }
+
     /**
      * Finds matching veterinary object with vetID and deletes from the vets list. If veterinary with the provided
      * doesn't exist, it prints error message
@@ -540,12 +809,26 @@ public class FarmMe {
                 this.employees) {
             if(vetTemp.getEmpID() == vetID && vetTemp instanceof Veterinary){
                 employees.remove(vetTemp);
-                System.out.println("Vet with tagNo " + vetID + " deleted successfully");
+                System.out.println("Vet with empId " + vetID + " deleted successfully");
                 return;
             }
         }
 
         System.out.println("Vet with empID " + vetID + " doesn't exist");
+
+    }
+
+    public void deleteFarmWorker(int empId){
+        for (Employee workerTemp:
+                this.employees) {
+            if(workerTemp.getEmpID() == empId && workerTemp instanceof FarmWorker){
+                employees.remove(workerTemp);
+                System.out.println("Farm Worker with empId " + workerTemp + " deleted successfully");
+                return;
+            }
+        }
+
+        System.out.println("Farm Worker with empID " + empId + " doesn't exist");
 
     }
 
@@ -566,15 +849,39 @@ public class FarmMe {
                 System.out.println("Vet #" + vetId);
                 System.out.println("    Gender: " + vet.getGender());
                 System.out.println("    Date of birth: " + vet.getDateOfBirth().format(dateFormat));
-                System.out.println("    Has BSc Degree: $" + ((Veterinary) vet).getBScDegree());
-                System.out.println("    Date of graduation: $" + ((Veterinary) vet).getDateOfGraduation().format(dateFormat));
-                System.out.println("    Expertise level: $" + ((Veterinary) vet).getExpertiseLevel());
+                System.out.println("    Has BSc Degree: " + ((Veterinary) vet).getBScDegree());
+                System.out.println("    Date of graduation: " + ((Veterinary) vet).getDateOfGraduation().format(dateFormat));
+                System.out.println("    Expertise level: " + ((Veterinary) vet).getExpertiseLevel());
                 return;
             }
         }
 
 
         System.out.println("Vet with vetID " + vetId + " doesn't exist");
+
+
+
+    }
+
+    public void getFarmWorkerDetails(int empId){
+
+        for (Employee worker:
+                employees) {
+            if(worker.getEmpID() == empId && worker instanceof FarmWorker){
+                DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+
+                System.out.println("Farm Worker #" + empId);
+                System.out.println("    Gender: " + worker.getGender());
+                System.out.println("    Date of birth: " + worker.getDateOfBirth().format(dateFormat));
+                System.out.println("    Previous farm: " + ((FarmWorker) worker).getPreviousFarmName());
+                System.out.println("    Work experience: " + ((FarmWorker) worker).getWorkExperience());
+                return;
+            }
+        }
+
+
+        System.out.println("Farm Worker with empId " + empId + " doesn't exist");
 
 
 
@@ -1116,6 +1423,95 @@ public class FarmMe {
 
         }
     }
+
+    public void listFarmWorker(){
+        System.out.println("All farm workers that are in the system: ");
+        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+        for (Employee worker:
+                this.employees) {
+            if(worker instanceof FarmWorker){
+                System.out.println("Farm Worker #" + worker.getEmpID());
+                System.out.println("    Gender: " + worker.getGender());
+                System.out.println("    Date of birth: " + worker.getDateOfBirth().format(dateFormat));
+                System.out.println("    Previous farm: " + ((FarmWorker) worker).getPreviousFarmName());
+                System.out.println("    Work experience: " + ((FarmWorker) worker).getWorkExperience());
+            }
+
+        }
+    }
+
+
+    public void feedingAnimal(int tagNo){
+        Animal animal = null;
+
+        for (Animal animalTemp:
+                this.animals) {
+            if(animalTemp.getTagNo() == tagNo){
+                animal = animalTemp;
+                break;
+            }
+
+        }
+        if(animal == null){
+            System.out.println("Animal with tagNo " + tagNo + " doesn't exist");
+            return;
+        }
+
+        System.out.println("Feeding information about " + (animal instanceof Sheep ? "Sheep" : "Cow") + "is provided below: ");
+        animal.feeding();
+    }
+
+    public double getEmpSalary(int empId){
+        Employee employee = null;
+
+        for (Employee empTemp:
+                this.employees) {
+            if(empTemp.getEmpID() == empId){
+                employee = empTemp;
+                break;
+            }
+        }
+
+        if(employee == null){
+            System.out.println("Employee with id " + empId + " doesn't exist");
+            return -1;
+        }
+
+
+
+        return employee.getSalary();
+    }
+
+    public void addMilkingMeasurement(int tagNo, double amount){
+        Animal animal = null;
+
+        for (Animal animalTemp:
+                this.animals) {
+            if(animalTemp.getTagNo() == tagNo){
+                animal = animalTemp;
+                break;
+            }
+
+        }
+        if(animal == null){
+            System.out.println("Animal with tagNo " + tagNo + " doesn't exist");
+            return;
+        }
+
+
+        if(animal.getMilking().containsKey(LocalDate.now())){
+            System.out.println("Milking already recorded for this animal today");
+            return;
+        }
+
+        animal.getMilking().put(LocalDate.now(), amount);
+        DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+        System.out.println("Milking dated "+ LocalDate.now().format(dateFormat) + " for animal with tagNo" + tagNo + " is recorded.");
+
+    }
+
 
     /**
      * Terminates the program

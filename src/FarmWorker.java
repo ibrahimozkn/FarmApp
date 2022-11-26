@@ -1,9 +1,25 @@
+import java.time.LocalDate;
+
 public class FarmWorker extends Employee{
 
-    private int previousFarmName;
+    private String previousFarmName;
     private int workExperience;
 
-    public int getPreviousFarmName() {
+    public FarmWorker(int empId, String gender, LocalDate dateOfBirth){
+        this.setEmpID(empId);
+        this.setGender(gender);
+        this.setDateOfBirth(dateOfBirth);
+    }
+
+    public FarmWorker(int empId, String gender, LocalDate dateOfBirth, String previousFarmName, int workExperience){
+        this.setEmpID(empId);
+        this.setGender(gender);
+        this.setDateOfBirth(dateOfBirth);
+        this.previousFarmName = previousFarmName;
+        this.workExperience = workExperience;
+    }
+
+    public String getPreviousFarmName() {
         return previousFarmName;
     }
 
@@ -11,7 +27,7 @@ public class FarmWorker extends Employee{
         return workExperience;
     }
 
-    public void setPreviousFarmName(int previousFarmName) {
+    public void setPreviousFarmName(String previousFarmName) {
         this.previousFarmName = previousFarmName;
     }
 
@@ -21,8 +37,14 @@ public class FarmWorker extends Employee{
 
     //TODO: Do Compare Functions
     @Override
-    public int compareTo(Object o) {
-        return 0;
+    public int compareTo(Employee employee) {
+        if(employee.getSalary() == this.getSalary()){
+            return 0;
+        }else if(employee.getSalary() > this.getSalary()){
+            return 1;
+        }else {
+            return -1;
+        }
     }
 
     @Override

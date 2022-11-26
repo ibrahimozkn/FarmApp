@@ -26,13 +26,20 @@ public class Sheep extends Animal{
     //TODO: Constructor
     public void feeding() {
         if(this.getGender() == "male" && this.getAge() < 5){
+            System.out.println("Only grass");
             /*only grass*/
         }else if(this.getGender() == "female" && this.getAge() < 8){
+            System.out.println("Only grass");
             /*only grass*/
         }else if(this.getGender() == "male" && this.getAge() > 5){
+            System.out.println("Total mixed ration (TMR) where includes hay, fermented grass (silage), maize silage and high energy grains like brewers grains, soy bean, cotton seed and citrus pulp.");
+
             /*Total mixed
-ration (TMR) diet is needed. */
+            ration (TMR) diet is needed. */
         }else if(this.getGender() == "female" && this.getAge() > 8){
+            System.out.println("Total mixed ration (TMR) where includes hay, fermented grass (silage), maize silage and high energy grains like brewers grains, soy bean, cotton seed and citrus pulp.");
+
+
             /* Total
 mixed ration (TMR) diet is needed.*/
         }

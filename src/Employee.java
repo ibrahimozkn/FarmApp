@@ -1,6 +1,6 @@
 import java.time.LocalDate;
 
-public abstract class Employee implements Comparable, Payment{
+public abstract class Employee implements Comparable<Employee>, Payment{
     private int empID;
     private String gender;
     private LocalDate dateOfBirth;

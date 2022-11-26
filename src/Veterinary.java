@@ -63,8 +63,14 @@ public class Veterinary extends Employee{
 
     //TODO: Do Compare Functions
     @Override
-    public int compareTo(Object o) {
-        return 0;
+    public int compareTo(Employee employee) {
+        if(employee.getSalary() == this.getSalary()){
+            return 0;
+        }else if(employee.getSalary() > this.getSalary()){
+            return 1;
+        }else {
+            return -1;
+        }
     }
 
     public double getSalary() {
