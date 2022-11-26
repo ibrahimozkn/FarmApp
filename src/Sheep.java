@@ -2,9 +2,20 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The type Sheep.
+ */
 public class Sheep extends Animal{
 
 
+    /**
+     * Instantiates a new Sheep.
+     *
+     * @param tagNo       the tag no
+     * @param gender      the gender
+     * @param dateOfBirth the date of birth
+     * @param purchased   the purchased
+     */
     public Sheep(int tagNo, String gender, LocalDate dateOfBirth, boolean purchased){
         this.setTagNo(tagNo);
         this.setGender(gender);
@@ -14,6 +25,13 @@ public class Sheep extends Animal{
         this.setMilking(new HashMap<LocalDate, Double>());
     }
 
+    /**
+     * Instantiates a new Sheep.
+     *
+     * @param tagNo     the tag no
+     * @param gender    the gender
+     * @param purchased the purchased
+     */
     public Sheep(int tagNo, String gender, boolean purchased){
         this.setTagNo(tagNo);
         this.setGender(gender);

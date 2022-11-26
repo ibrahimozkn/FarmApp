@@ -2,6 +2,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The type Animal.
+ */
 public abstract class Animal {
     private int tagNo;
     private String gender;
@@ -10,6 +13,9 @@ public abstract class Animal {
     private HashMap<LocalDate, Double> milking;
     private ArrayList<Treatment> treatments;
 
+    /**
+     * Feeding.
+     */
     public abstract void feeding();
 
     /**
@@ -58,10 +64,20 @@ public abstract class Animal {
     }
 
 
+    /**
+     * Gets milking.
+     *
+     * @return the milking
+     */
     public HashMap<LocalDate, Double> getMilking() {
         return milking;
     }
 
+    /**
+     * Gets treatments.
+     *
+     * @return the treatments
+     */
     public ArrayList<Treatment> getTreatments() {
         return treatments;
     }
@@ -103,11 +119,21 @@ public abstract class Animal {
         this.dateOfBirth = dateOfBirth;
     }
 
+    /**
+     * Sets milking.
+     *
+     * @param milking the milking
+     */
     public void setMilking(HashMap<LocalDate, Double> milking) {
         this.milking = milking;
     }
 
 
+    /**
+     * Sets treatments.
+     *
+     * @param treatments the treatments
+     */
     public void setTreatments(ArrayList<Treatment> treatments) {
         this.treatments = treatments;
     }

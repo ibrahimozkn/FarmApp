@@ -376,7 +376,6 @@ public class FarmMe {
 
     /**
      * First, collects data from the user about cow object. Then adds a new cow object to FarmMe's cow list.
-     *
      */
     public void addCow(){
         Scanner userInput = new Scanner(System.in);
@@ -457,6 +456,9 @@ public class FarmMe {
     }
 
 
+    /**
+     * Add sheep.
+     */
     public void addSheep(){
         Scanner userInput = new Scanner(System.in);
 
@@ -549,6 +551,11 @@ public class FarmMe {
 
     }
 
+    /**
+     * Delete sheep.
+     *
+     * @param tagNo the tag no
+     */
     public void deleteSheep(int tagNo){
         for (Animal animal:
                 this.animals) {
@@ -593,6 +600,11 @@ public class FarmMe {
     }
 
 
+    /**
+     * Get sheep details.
+     *
+     * @param tagNo the tag no
+     */
     public void getSheepDetails(int tagNo){
 
 
@@ -617,7 +629,6 @@ public class FarmMe {
 
     /**
      * First collects required data to create Veterinary object from the user, then adds new Veterinary object to the list of vets
-     *
      */
     public void addVet(){
         Scanner userInput = new Scanner(System.in);
@@ -719,6 +730,9 @@ public class FarmMe {
 
     }
 
+    /**
+     * Add farm worker.
+     */
     public void addFarmWorker(){
         Scanner userInput = new Scanner(System.in);
 
@@ -818,6 +832,11 @@ public class FarmMe {
 
     }
 
+    /**
+     * Delete farm worker.
+     *
+     * @param empId the emp id
+     */
     public void deleteFarmWorker(int empId){
         for (Employee workerTemp:
                 this.employees) {
@@ -863,6 +882,11 @@ public class FarmMe {
 
     }
 
+    /**
+     * Get farm worker details.
+     *
+     * @param empId the emp id
+     */
     public void getFarmWorkerDetails(int empId){
 
         for (Employee worker:
@@ -1140,6 +1164,11 @@ public class FarmMe {
         }
     }
 
+    /**
+     * Get sheep treatment.
+     *
+     * @param tagNo the tag no
+     */
     public void getSheepTreatment(int tagNo){
 
         Sheep sheep = null;
@@ -1283,6 +1312,12 @@ public class FarmMe {
         }
     }
 
+    /**
+     * Get sheep treatment.
+     *
+     * @param tagNo           the tag no
+     * @param dateOfTreatment the date of treatment
+     */
     public void getSheepTreatment(int tagNo, LocalDate dateOfTreatment){
 
 
@@ -1383,6 +1418,9 @@ public class FarmMe {
         }
     }
 
+    /**
+     * List sheep.
+     */
     public void listSheep(){
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
@@ -1424,6 +1462,9 @@ public class FarmMe {
         }
     }
 
+    /**
+     * List farm worker.
+     */
     public void listFarmWorker(){
         System.out.println("All farm workers that are in the system: ");
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
@@ -1442,6 +1483,11 @@ public class FarmMe {
     }
 
 
+    /**
+     * Feeding animal.
+     *
+     * @param tagNo the tag no
+     */
     public void feedingAnimal(int tagNo){
         Animal animal = null;
 
@@ -1462,6 +1508,12 @@ public class FarmMe {
         animal.feeding();
     }
 
+    /**
+     * Get emp salary double.
+     *
+     * @param empId the emp id
+     * @return the double
+     */
     public double getEmpSalary(int empId){
         Employee employee = null;
 
@@ -1483,6 +1535,12 @@ public class FarmMe {
         return employee.getSalary();
     }
 
+    /**
+     * Add milking measurement.
+     *
+     * @param tagNo  the tag no
+     * @param amount the amount
+     */
     public void addMilkingMeasurement(int tagNo, double amount){
         Animal animal = null;
 
@@ -1542,7 +1600,7 @@ public class FarmMe {
     /**
      * Instantiates a new Farm me with cow and vet list
      *
-     * @param animals list of the animals
+     * @param animals   list of the animals
      * @param employees list of the employees
      */
     public FarmMe(ArrayList<Animal> animals, ArrayList<Employee> employees){

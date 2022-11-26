@@ -7,7 +7,6 @@ import java.util.ArrayList;
  * @author Ibrahim Ozkan
  * @version 1.0
  * @since 1.0
- *
  */
 public class Treatment {
     private LocalDate dateOfTreatment;
@@ -22,6 +21,9 @@ public class Treatment {
         this.dateOfTreatment = dateOfTreatment;
     }
 
+    /**
+     * Instantiates a new Treatment.
+     */
     public Treatment(){
         this.dateOfTreatment = LocalDate.now();
     }

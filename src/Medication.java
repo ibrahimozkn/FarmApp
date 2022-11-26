@@ -1,12 +1,12 @@
 import java.time.LocalDate;
 //TODO: Write desc
+
 /**
  * This class represents medication which is going to be used in a treatment.
  *
  * @author Ibrahim Ozkan
  * @version 1.0
  * @since 1.0
- *
  */
 public class Medication {
     private String details;

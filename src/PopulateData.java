@@ -7,16 +7,15 @@ import java.util.ArrayList;
  * @author Ibrahim Ozkan
  * @version 1.0
  * @since 1.0
- *
  */
 public class PopulateData {
     /**
      * Populates farm me object with 3 cows and 3 vets where each cow has 1 treatment and each treatment has 1 medication.
      *
-     * @see FarmMe
      * @return populated farmMe object
+     * @see FarmMe
      */
-     public static FarmMe populate(){
+    public static FarmMe populate(){
         ArrayList<Animal> animals = new ArrayList<Animal>();
         animals.add(new Cow(1, "male", LocalDate.now(), true, 100));
         animals.add(new Cow(2, "female", LocalDate.of(2001, 1, 5), false, 70));
