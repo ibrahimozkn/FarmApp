@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * This class represents cow the animal which includes its basic informations and treatments
+ * This class represents cow the animal which includes its weight and other variables and methods included in animal class
  *
  * @author Ibrahim Ozkan
  * @version 1.0
@@ -36,8 +36,8 @@ public class Cow extends Animal{
      * @param tagNo       the tag no
      * @param gender      the gender
      * @param dateOfBirth the date of birth
-     * @param purchased   the purchased
-     * @param weight      the weight
+     * @param purchased   whether the cow is purchased or farm raising
+     * @param weight      the weight of the cow
      */
     public Cow(int tagNo, String gender, LocalDate dateOfBirth, boolean purchased, double weight){
         this.setTagNo(tagNo);
@@ -67,7 +67,7 @@ public class Cow extends Animal{
     /**
      * Gets weight.
      *
-     * @return the weight
+     * @return weight of the cow
      */
     public double getWeight() {
         return weight;
@@ -76,12 +76,16 @@ public class Cow extends Animal{
     /**
      * Sets weight.
      *
-     * @param weight the weight
+     * @param weight weight of the cow
      */
     public void setWeight(double weight) {
         this.weight = weight;
     }
 
+    /**
+    * Provides feeding information about cow according to its age or weight
+    *
+    * */
     public void feeding(){
         if(this.getAge() < 3){
             System.out.println("Only grass");

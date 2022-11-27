@@ -22,7 +22,7 @@ public class Treatment {
     }
 
     /**
-     * Instantiates a new Treatment.
+     * Instantiates a new Treatment with date of treatment as today.
      */
     public Treatment(){
         this.dateOfTreatment = LocalDate.now();

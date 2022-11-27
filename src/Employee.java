@@ -1,7 +1,11 @@
 import java.time.LocalDate;
 
 /**
- * The type Employee.
+ * Interface which represents a real-world employee.
+ *
+ * @author Ibrahim Ozkan
+ * @version 1.0
+ * @since 1.0
  */
 public abstract class Employee implements Comparable<Employee>, Payment{
     private int empID;
@@ -9,43 +13,43 @@ public abstract class Employee implements Comparable<Employee>, Payment{
     private LocalDate dateOfBirth;
 
     /**
-     * Gets emp id.
+     * Gets employee id
      *
-     * @return the emp id
+     * @return the employee id
      */
     public int getEmpID() {
         return empID;
     }
 
     /**
-     * Gets gender of the vet
+     * Gets gender of the employee
      *
-     * @return gender of the vet
+     * @return gender of the employee
      */
     public String getGender() {
         return gender;
     }
 
     /**
-     * Gets date of birth of the vet
+     * Gets date of birth of the employee
      *
-     * @return date of birth of the vet
+     * @return date of birth of the employee
      */
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
     /**
-     * Sets emp id.
+     * Sets employee id
      *
-     * @param empID the emp id
+     * @param empID the employee id
      */
     public void setEmpID(int empID) {
         this.empID = empID;
     }
 
     /**
-     * Sets gender of the vet
+     * Sets gender of the employee
      *
      * @param gender gender of the vet
      */
@@ -54,9 +58,9 @@ public abstract class Employee implements Comparable<Employee>, Payment{
     }
 
     /**
-     * Sets date of birth of the vet
+     * Sets date of birth of the employee
      *
-     * @param dateOfBirth date of birth of the vet
+     * @param dateOfBirth date of birth of the employee
      */
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;

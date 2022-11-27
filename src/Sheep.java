@@ -3,7 +3,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * The type Sheep.
+ * Class which represents a real-world animal sheep.
+ *
+ * @author Ibrahim Ozkan
+ * @version 1.0
+ * @since 1.0
+ * @see Animal
+ *
  */
 public class Sheep extends Animal{
 
@@ -14,7 +20,7 @@ public class Sheep extends Animal{
      * @param tagNo       the tag no
      * @param gender      the gender
      * @param dateOfBirth the date of birth
-     * @param purchased   the purchased
+     * @param purchased   if purchased or farm raising
      */
     public Sheep(int tagNo, String gender, LocalDate dateOfBirth, boolean purchased){
         this.setTagNo(tagNo);
@@ -30,7 +36,7 @@ public class Sheep extends Animal{
      *
      * @param tagNo     the tag no
      * @param gender    the gender
-     * @param purchased the purchased
+     * @param purchased if purchased or farm raising
      */
     public Sheep(int tagNo, String gender, boolean purchased){
         this.setTagNo(tagNo);
@@ -41,7 +47,10 @@ public class Sheep extends Animal{
         this.setMilking(new HashMap<LocalDate, Double>());
     }
 
-    //TODO: Constructor
+    /**
+     * Provides feeding information about sheep according to its age
+     *
+     * */
     public void feeding() {
         if(this.getGender() == "male" && this.getAge() < 5){
             System.out.println("Only grass");

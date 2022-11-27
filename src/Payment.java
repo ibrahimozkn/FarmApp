@@ -1,16 +1,21 @@
 /**
- * The interface Payment.
+ * Interface for payments
+ *
+ * @author Ibrahim Ozkan
+ * @version 1.0
+ * @since 1.0
+ *
  */
 public interface Payment {
     /**
-     * The constant grossSalary.
+     * Gross salary of anyone who gets patment
      */
-    public static final double grossSalary = 10000;
+    double grossSalary = 10000;
 
     /**
-     * Gets salary.
+     * Method signature which needs to be implemented in a class where uses payment interface
      *
      * @return the salary
      */
-    public double getSalary();
+    double getSalary();
 }

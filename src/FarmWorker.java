@@ -1,7 +1,13 @@
 import java.time.LocalDate;
 
 /**
- * The type Farm worker.
+ * Employee type that is working for the farm. Class represents a farm worker.
+ *
+ * @author Ibrahim Ozkan
+ * @version 1.0
+ * @since 1.0
+ * @see Employee
+ *
  */
 public class FarmWorker extends Employee{
 
@@ -11,7 +17,7 @@ public class FarmWorker extends Employee{
     /**
      * Instantiates a new Farm worker.
      *
-     * @param empId       the emp id
+     * @param empId       the employee id
      * @param gender      the gender
      * @param dateOfBirth the date of birth
      */
@@ -24,7 +30,7 @@ public class FarmWorker extends Employee{
     /**
      * Instantiates a new Farm worker.
      *
-     * @param empId            the emp id
+     * @param empId            the employee id
      * @param gender           the gender
      * @param dateOfBirth      the date of birth
      * @param previousFarmName the previous farm name
@@ -39,7 +45,7 @@ public class FarmWorker extends Employee{
     }
 
     /**
-     * Gets previous farm name.
+     * Gets previous farm name where worker worked.
      *
      * @return the previous farm name
      */
@@ -48,16 +54,16 @@ public class FarmWorker extends Employee{
     }
 
     /**
-     * Gets work experience.
+     * Gets work experience of the employee.
      *
-     * @return the work experience
+     * @return the work experience of the employee
      */
     public int getWorkExperience() {
         return workExperience;
     }
 
     /**
-     * Sets previous farm name.
+     * Sets previous farm name where worker worked.
      *
      * @param previousFarmName the previous farm name
      */
@@ -66,15 +72,21 @@ public class FarmWorker extends Employee{
     }
 
     /**
-     * Sets work experience.
+     * Sets work experience of the worker.
      *
-     * @param workExperience the work experience
+     * @param workExperience the work experience of the worker
      */
     public void setWorkExperience(int workExperience) {
         this.workExperience = workExperience;
     }
 
-    //TODO: Do Compare Functions
+
+    /**
+     * Compares salaries of current employee object with the given employee.
+     *
+     * @return 0 if salaries are equal, 1 if given employee has greater salary, -1 if current object has greater salary.
+     *
+     * */
     @Override
     public int compareTo(Employee employee) {
         if(employee.getSalary() == this.getSalary()){
@@ -86,6 +98,12 @@ public class FarmWorker extends Employee{
         }
     }
 
+    /**
+     * Calculates salary of the farm worker
+     *
+     * @return calculated salary of the farm worker
+     *
+     * */
     @Override
     public double getSalary() {
         return Payment.grossSalary + (Payment.grossSalary * 0.02 * workExperience);

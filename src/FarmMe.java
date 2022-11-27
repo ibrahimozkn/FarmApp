@@ -7,8 +7,8 @@ import java.util.Scanner;
 /**
  * FarmMe is the main class that whole FarmApp is operated. It stores some information about the farm such as
  * <ul>
- *     <li>List of cows</li>
- *     <li>List of vets</li>
+ *     <li>List of animals</li>
+ *     <li>List of employees</li>
  * </ul>
  *
  * @author Ibrahim Ozkan
@@ -18,16 +18,16 @@ import java.util.Scanner;
 public class FarmMe {
 
     /**
-     * List of cows
+     * List of animals
      *
-     * @see Cow
+     * @see Animal
      */
     public ArrayList<Animal> animals;
 
     /**
-     * List of vets
+     * List of employees
      *
-     * @see Veterinary
+     * @see Employee
      */
     public ArrayList<Employee> employees;
 
@@ -375,7 +375,7 @@ public class FarmMe {
     }
 
     /**
-     * First, collects data from the user about cow object. Then adds a new cow object to FarmMe's cow list.
+     * First, collects data from the user about cow object. Then adds a new cow object to FarmMe's animal list.
      */
     public void addCow(){
         Scanner userInput = new Scanner(System.in);
@@ -457,7 +457,7 @@ public class FarmMe {
 
 
     /**
-     * Add sheep.
+     * Initially gets details of the sheep from used, then adds the sheep to animal list.
      */
     public void addSheep(){
         Scanner userInput = new Scanner(System.in);
@@ -531,7 +531,7 @@ public class FarmMe {
     }
 
     /**
-     * Deletes cow object from the list of cows with the matching tagNo if exists. If cow with tag no doesn't exist
+     * Deletes cow object from the list of animals with the matching tagNo if exists. If cow with tag no doesn't exist
      * prints user an error message.
      *
      * @param tagNo tag number of the cow
@@ -552,9 +552,10 @@ public class FarmMe {
     }
 
     /**
-     * Delete sheep.
+     * Deletes sheep object from the list of animals with the matching tagNo if exists. If sheep with tag no doesn't exist
+     * prints user an error message.
      *
-     * @param tagNo the tag no
+     * @param tagNo tag number of the sheep
      */
     public void deleteSheep(int tagNo){
         for (Animal animal:
@@ -601,7 +602,7 @@ public class FarmMe {
 
 
     /**
-     * Get sheep details.
+     * Shows details of the sheep with matching tagNo. If sheep doesn't exist, method prints user an error message.
      *
      * @param tagNo the tag no
      */
@@ -628,7 +629,7 @@ public class FarmMe {
     }
 
     /**
-     * First collects required data to create Veterinary object from the user, then adds new Veterinary object to the list of vets
+     * First collects required data to create Veterinary object from the user, then adds new Veterinary object to the list of employees
      */
     public void addVet(){
         Scanner userInput = new Scanner(System.in);
@@ -731,7 +732,7 @@ public class FarmMe {
     }
 
     /**
-     * Add farm worker.
+     * First collects required data to create FarmWorker object from the user, then adds new Veterinary object to the list of employees
      */
     public void addFarmWorker(){
         Scanner userInput = new Scanner(System.in);
@@ -813,29 +814,30 @@ public class FarmMe {
     }
 
     /**
-     * Finds matching veterinary object with vetID and deletes from the vets list. If veterinary with the provided
+     * Finds matching veterinary object with empID deletes from the employees list. If veterinary with the provided
      * doesn't exist, it prints error message
      *
-     * @param vetID vets identity number
+     * @param empID vets identity number
      */
-    public void deleteVet(int vetID){
+    public void deleteVet(int empID){
         for (Employee vetTemp:
                 this.employees) {
-            if(vetTemp.getEmpID() == vetID && vetTemp instanceof Veterinary){
+            if(vetTemp.getEmpID() == empID && vetTemp instanceof Veterinary){
                 employees.remove(vetTemp);
-                System.out.println("Vet with empId " + vetID + " deleted successfully");
+                System.out.println("Vet with empId " + empID + " deleted successfully");
                 return;
             }
         }
 
-        System.out.println("Vet with empID " + vetID + " doesn't exist");
+        System.out.println("Vet with empID " + empID + " doesn't exist");
 
     }
 
     /**
-     * Delete farm worker.
+     * Finds matching farm worker object with empID and deletes from the employees list. If farm worker with the provided
+     * doesn't exist, it prints error message
      *
-     * @param empId the emp id
+     * @param empId employee id
      */
     public void deleteFarmWorker(int empId){
         for (Employee workerTemp:
@@ -852,20 +854,20 @@ public class FarmMe {
     }
 
     /**
-     * Prints the details of the matching veterinary object with the provided vetid. If vet with given vetid
+     * Prints the details of the matching veterinary object with the provided empID. If vet with given employee id
      * doesn't exist error message is printed.
      *
-     * @param vetId vet Id
+     * @param empID vet's employee id
      */
-    public void getVetDetails(int vetId){
+    public void getVetDetails(int empID){
 
         for (Employee vet:
                 employees) {
-            if(vet.getEmpID() == vetId && vet instanceof Veterinary){
+            if(vet.getEmpID() == empID && vet instanceof Veterinary){
                 DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
 
-                System.out.println("Vet #" + vetId);
+                System.out.println("Vet #" + empID);
                 System.out.println("    Gender: " + vet.getGender());
                 System.out.println("    Date of birth: " + vet.getDateOfBirth().format(dateFormat));
                 System.out.println("    Has BSc Degree: " + ((Veterinary) vet).getBScDegree());
@@ -876,16 +878,17 @@ public class FarmMe {
         }
 
 
-        System.out.println("Vet with vetID " + vetId + " doesn't exist");
+        System.out.println("Vet with vetID " + empID + " doesn't exist");
 
 
 
     }
 
     /**
-     * Get farm worker details.
+     * Prints the details of the matching farm worker object with the provided empID. If farm worker with given employee id
+     * doesn't exist error message is printed.
      *
-     * @param empId the emp id
+     * @param empId farm worker's employee id
      */
     public void getFarmWorkerDetails(int empId){
 
@@ -1099,7 +1102,7 @@ public class FarmMe {
     }
 
     /**
-     * Prints treatment details of the cow with its medication details. If cow doesn't exist, it prints error message
+     * Prints treatment details of the cow with its medication details and type. If cow doesn't exist, it prints error message
      *
      * @param tagNo the tag no
      */
@@ -1165,7 +1168,7 @@ public class FarmMe {
     }
 
     /**
-     * Get sheep treatment.
+     * Prints treatment details of the sheep with its medication details and type. If sheep doesn't exist, it prints error message
      *
      * @param tagNo the tag no
      */
@@ -1313,7 +1316,7 @@ public class FarmMe {
     }
 
     /**
-     * Get sheep treatment.
+     * Retrieves all treatments of a sheep at an exact date that is given from the user. If sheep or treatment doesn't exist, method prints an error message.
      *
      * @param tagNo           the tag no
      * @param dateOfTreatment the date of treatment
@@ -1419,7 +1422,7 @@ public class FarmMe {
     }
 
     /**
-     * List sheep.
+     * Lists all the sheep that are found in the app with their details
      */
     public void listSheep(){
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
@@ -1463,7 +1466,7 @@ public class FarmMe {
     }
 
     /**
-     * List farm worker.
+     * Lists all the farm workers that are found in the app with their details
      */
     public void listFarmWorker(){
         System.out.println("All farm workers that are in the system: ");
@@ -1484,7 +1487,7 @@ public class FarmMe {
 
 
     /**
-     * Feeding animal.
+     * Provides feeding information based on a specific animal that has provided tag number. If animal doesn't exist method prints an error message.
      *
      * @param tagNo the tag no
      */
@@ -1509,10 +1512,11 @@ public class FarmMe {
     }
 
     /**
-     * Get emp salary double.
+     * Returns employee's salary by calling method of the given employee. It checks the employees list and gets the employee object that is matching
+     * with the given employee id. If employee doesn't exist, method prints an error.
      *
      * @param empId the emp id
-     * @return the double
+     * @return salary of the employee
      */
     public double getEmpSalary(int empId){
         Employee employee = null;
@@ -1536,10 +1540,10 @@ public class FarmMe {
     }
 
     /**
-     * Add milking measurement.
+     * Adds milking measurement record to animal that belongs to given tag number. Milking measurement can only be done once to an animal daily.
      *
      * @param tagNo  the tag no
-     * @param amount the amount
+     * @param amount amount that is milked
      */
     public void addMilkingMeasurement(int tagNo, double amount){
         Animal animal = null;
@@ -1580,7 +1584,7 @@ public class FarmMe {
     }
 
     /**
-     * Instantiates a new Farm me with empty cow and vet list
+     * Instantiates a new Farm me with empty animal and employee list
      */
     public FarmMe(){
         this.animals = new ArrayList<Animal>();
@@ -1588,7 +1592,7 @@ public class FarmMe {
     }
 
     /**
-     * Instantiates a new Farm me with cow list and empty vet list
+     * Instantiates a new Farm me with animal list and empty employee list
      *
      * @param animals list of the animals
      */
@@ -1598,7 +1602,7 @@ public class FarmMe {
     }
 
     /**
-     * Instantiates a new Farm me with cow and vet list
+     * Instantiates a new Farm me with animal and employee list
      *
      * @param animals   list of the animals
      * @param employees list of the employees

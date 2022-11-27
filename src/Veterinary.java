@@ -47,9 +47,9 @@ public class Veterinary extends Employee{
     }
 
     /**
-     * Get b sc degree boolean.
+     * Gets the BScDegree status of the vet
      *
-     * @return the boolean
+     * @return boolean where true means has and false means has not
      */
     public boolean getBScDegree(){
         return this.BScDegree;
@@ -74,9 +74,9 @@ public class Veterinary extends Employee{
     }
 
     /**
-     * Sets b sc degree.
+     * Sets the BScDegree status of the vet
      *
-     * @param BScDegree the b sc degree
+     * @param BScDegree boolean where true means has and false means has not
      */
     public void setBScDegree(boolean BScDegree) {
         this.BScDegree = BScDegree;
@@ -101,7 +101,12 @@ public class Veterinary extends Employee{
     }
 
 
-    //TODO: Do Compare Functions
+    /**
+     * Compares salaries of current employee object with the given employee.
+     *
+     * @return 0 if salaries are equal, 1 if given employee has greater salary, -1 if current object has greater salary.
+     *
+     * */
     @Override
     public int compareTo(Employee employee) {
         if(employee.getSalary() == this.getSalary()){
@@ -113,6 +118,12 @@ public class Veterinary extends Employee{
         }
     }
 
+    /**
+     * Calculates salary of the vet
+     *
+     * @return calculated salary of the vet
+     *
+     * */
     public double getSalary() {
         return Payment.grossSalary * (Payment.grossSalary * 0.1 * (LocalDate.now().getYear() - this.dateOfGraduation.getYear()));
     }

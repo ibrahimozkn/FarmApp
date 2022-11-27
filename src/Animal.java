@@ -3,7 +3,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * The type Animal.
+ * Abstract class which represents a real-world animal.
+ *
+ * @author Ibrahim Ozkan
+ * @version 1.0
+ * @since 1.0
  */
 public abstract class Animal {
     private int tagNo;
@@ -14,7 +18,7 @@ public abstract class Animal {
     private ArrayList<Treatment> treatments;
 
     /**
-     * Feeding.
+     * Feeding information provider method.
      */
     public abstract void feeding();
 
@@ -65,7 +69,7 @@ public abstract class Animal {
 
 
     /**
-     * Gets milking.
+     * Gets milking records of animal in hashmap where key is date and value is amount milked
      *
      * @return the milking
      */
@@ -120,7 +124,7 @@ public abstract class Animal {
     }
 
     /**
-     * Sets milking.
+     * Assigns provided milking hashmap to animal's milking record variable
      *
      * @param milking the milking
      */
@@ -130,7 +134,7 @@ public abstract class Animal {
 
 
     /**
-     * Sets treatments.
+     * Sets list of treatments
      *
      * @param treatments the treatments
      */
@@ -139,7 +143,7 @@ public abstract class Animal {
     }
 
     /**
-     * Adds treatment to a cow
+     * Adds single treatment to animal
      *
      * @param treatment treatment object
      */
@@ -147,9 +151,4 @@ public abstract class Animal {
         treatments.add(treatment);
     }
 
-    /**
-     * Gets treatments of the cow
-     *
-     * @return list of treatment objects
-     */
 }

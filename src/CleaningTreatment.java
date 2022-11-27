@@ -1,7 +1,13 @@
 import java.time.LocalDate;
 
 /**
- * The type Cleaning treatment.
+ * Type of Treatment which involves cleaning an animal by a worker
+ *
+ * @author Ibrahim Ozkan
+ * @version 1.0
+ * @since 1.0
+ * @see Treatment
+ *
  */
 public class CleaningTreatment extends Treatment{
     private String materialsUsed;
@@ -19,7 +25,7 @@ public class CleaningTreatment extends Treatment{
      * Instantiates a new Cleaning treatment.
      *
      * @param dateOfTreatment the date of treatment
-     * @param materialsUsed   the materials used
+     * @param materialsUsed   the materials used in the treatment
      */
     public CleaningTreatment(LocalDate dateOfTreatment, String materialsUsed){
         this.materialsUsed = materialsUsed;
@@ -31,8 +37,8 @@ public class CleaningTreatment extends Treatment{
      * Instantiates a new Cleaning treatment.
      *
      * @param dateOfTreatment the date of treatment
-     * @param materialsUsed   the materials used
-     * @param worker          the worker
+     * @param materialsUsed   the materials used in the treatment
+     * @param worker          the farm worker
      */
     public CleaningTreatment(LocalDate dateOfTreatment, String materialsUsed, FarmWorker worker){
         this.materialsUsed = materialsUsed;
@@ -43,7 +49,7 @@ public class CleaningTreatment extends Treatment{
     /**
      * Gets materials used.
      *
-     * @return the materials used
+     * @return materials used in the treatment
      */
     public String getMaterialsUsed() {
         return materialsUsed;
@@ -52,25 +58,25 @@ public class CleaningTreatment extends Treatment{
     /**
      * Sets materials used.
      *
-     * @param materialsUsed the materials used
+     * @param materialsUsed materials used in the treatment
      */
     public void setMaterialsUsed(String materialsUsed) {
         this.materialsUsed = materialsUsed;
     }
 
     /**
-     * Gets worker.
+     * Gets worker who gave the treatment.
      *
-     * @return the worker
+     * @return FarmWorker object
      */
     public FarmWorker getWorker() {
         return worker;
     }
 
     /**
-     * C given by.
+     * Sets the farm worker who gave the cleaning treatment
      *
-     * @param worker the worker
+     * @param worker FarmWorker object
      */
     public void cGivenBy(FarmWorker worker){
         this.worker = worker;
