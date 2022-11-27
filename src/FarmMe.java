@@ -81,7 +81,13 @@ public class FarmMe {
             System.out.println("\nEnter your option: ");
 
 
-            option = userInput.nextInt();
+            try{
+                option = userInput.nextInt();
+                userInput.nextLine();
+            }catch (Exception e){
+                System.out.println("Invalid option");
+                continue;
+            }
 
             int tagNo;
             int vetId;
@@ -431,21 +437,34 @@ public class FarmMe {
             return;
         }
 
-        int purchasedInt;
+        int purchasedInt = -1;
 
         do {
-            System.out.println("Enter if cow is purchased or farm-rising (1 for purchased, 0 for farm-rising): ");
-            purchasedInt = userInput.nextInt();
-            userInput.nextLine();
+            try{
+                System.out.println("Enter if cow is purchased or farm-rising (1 for purchased, 0 for farm-rising): ");
+                purchasedInt = userInput.nextInt();
+                userInput.nextLine();
+            }catch (Exception e){
+                System.out.println("Invalid input");
+                continue;
+            }
+
         }while (purchasedInt != 1 && purchasedInt != 0);
 
 
 
         double weight;
 
-        System.out.println("Please enter the weight of the cow: ");
-        weight = userInput.nextDouble();
-        userInput.nextLine();
+        try {
+            System.out.println("Please enter the weight of the cow: ");
+            weight = userInput.nextDouble();
+            userInput.nextLine();
+        }catch (Exception e){
+            System.out.println("Invalid weight");
+            return;
+
+        }
+
 
 
         this.animals.add(new Cow(tagNo, gender, date, purchasedInt == 1, weight));
@@ -513,12 +532,18 @@ public class FarmMe {
             return;
         }
 
-        int purchasedInt;
+        int purchasedInt = -1;
 
         do {
-            System.out.println("Enter if sheep is purchased or farm-rising (1 for purchased, 0 for farm-rising): ");
-            purchasedInt = userInput.nextInt();
-            userInput.nextLine();
+            try{
+                System.out.println("Enter if cow is purchased or farm-rising (1 for purchased, 0 for farm-rising): ");
+                purchasedInt = userInput.nextInt();
+                userInput.nextLine();
+            }catch (Exception e){
+                System.out.println("Invalid input");
+                continue;
+            }
+
         }while (purchasedInt != 1 && purchasedInt != 0);
 
 
@@ -592,6 +617,11 @@ public class FarmMe {
                 System.out.println("    Age: " + animal.getAge());
                 System.out.println("    Purchase Status: " + (animal.getPurchased() ? "Purchased" : "Farm-rising"));
                 System.out.println("    Weight: " + ((Cow) animal).getWeight());
+                System.out.println("    Milking Records: ");
+                for(LocalDate dateKey : animal.getMilking().keySet()){
+                    System.out.println("        " + dateKey.format(dateFormat) + ": " + animal.getMilking().get(dateKey));
+
+                }
                 return;
             }
         }
@@ -614,12 +644,16 @@ public class FarmMe {
             if(animal.getTagNo() == tagNo && animal instanceof Sheep){
                 DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
-
                 System.out.println("Sheep #" + tagNo);
                 System.out.println("    Gender: " + animal.getGender());
                 System.out.println("    Date of birth: " + animal.getDateOfBirth().format(dateFormat));
                 System.out.println("    Age: " + animal.getAge());
                 System.out.println("    Purchase Status: " + (animal.getPurchased() ? "Purchased" : "Farm-rising"));
+                System.out.println("    Milking Records:");
+                for(LocalDate dateKey : animal.getMilking().keySet()){
+                    System.out.println("        " + dateKey.format(dateFormat) + ": " + animal.getMilking().get(dateKey));
+
+                }
                 return;
             }
         }
