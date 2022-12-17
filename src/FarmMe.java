@@ -30,6 +30,7 @@ public class FarmMe {
      * @see Employee
      */
     public ArrayList<Employee> employees;
+    public static FarmMe instance;
 
     /**
      * Main method that is executed when program runs.
@@ -37,8 +38,11 @@ public class FarmMe {
      * @param args the arguments in command line
      */
     public static void main(String[] args){
+        Gui gui = new Gui();
+
         FarmMe farm = PopulateData.populate();
-        farm.menu();
+        gui.showGUI(farm);
+        instance.menu();
     }
 
     /**
@@ -383,6 +387,7 @@ public class FarmMe {
     /**
      * First, collects data from the user about cow object. Then adds a new cow object to FarmMe's animal list.
      */
+    @Deprecated
     public void addCow(){
         Scanner userInput = new Scanner(System.in);
 
@@ -472,6 +477,11 @@ public class FarmMe {
         System.out.println("\nCow with tagNo " + tagNo + " added successfully");
 
 
+    }
+
+
+    public boolean addCow(int tagNo, String gender, LocalDate date, boolean purchased, double weight){
+        return this.animals.add(new Cow(tagNo, gender, date, purchased, weight));
     }
 
 
