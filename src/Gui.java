@@ -15,13 +15,14 @@ public class Gui extends JFrame implements ActionListener {
     JMenuItem opt1, opt2, opt3, opt4, opt5, opt6, opt7, opt8, opt9, opt10, opt11,
     opt12, opt13, opt14, opt15, opt16, opt17, opt18, opt19, opt20, opt21, opt22;
 
-    JAddCow addCowScreen = new JAddCow();
-
     FarmMe farmInstance;
 
-    public void showGUI(FarmMe farmInstance)
+    public Gui(FarmMe farm){
+        farmInstance = farm;
+    }
+
+    public void showGUI()
     {
-        farmInstance = this.farmInstance;
 
         mainMenu.setLayout(new GridLayout(30, 1));
         mainMenu.setLocationByPlatform(true);
@@ -50,10 +51,11 @@ public class Gui extends JFrame implements ActionListener {
         opt22 = new JMenuItem("Add milking measurement");
 
         opt1.setActionCommand("addCowScreen");
-        opt2.setActionCommand("addSheep");
+        opt2.setActionCommand("addSheepScreen");
 
 
         opt1.addActionListener(this);
+        opt2.addActionListener(this);
 
 
 
@@ -79,16 +81,18 @@ public class Gui extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String event = e.getActionCommand();
-
+        System.out.println(event);
         if(event.equalsIgnoreCase("addCowScreen")){
-            addCowScreen.showAddCowScreen();
+            new JAddCow(farmInstance).showScreen();
+        }else if(event.equalsIgnoreCase("addSheepScreen")){
+            new JAddSheep(farmInstance).showScreen();
         }
 
     }
 
 }
 
-class JAddCow extends JFrame implements ActionListener{
+class JAddCow extends Gui implements ActionListener{
     JTextField tagId = new JTextField();
     JRadioButton male = new JRadioButton("Male");
     JRadioButton female = new JRadioButton("Female");
@@ -103,7 +107,11 @@ class JAddCow extends JFrame implements ActionListener{
     ButtonGroup purchasedGroup = new ButtonGroup();
     JButton submit = new JButton();
 
-    public void showAddCowScreen(){
+    public JAddCow(FarmMe farm){
+        super(farm);
+    }
+
+    public void showScreen(){
         addCowScreen.setLayout(new GridLayout(10, 2));
         addCowScreen.setLocationByPlatform(true);
 
@@ -177,12 +185,111 @@ class JAddCow extends JFrame implements ActionListener{
         }
 
 
-        boolean result = FarmMe.instance.addCow(Integer.parseInt(tagId.getText()), male.getText().isEmpty() ? "female" : "male", date, purchased.getText().isEmpty() ? true : false, Double.parseDouble(weight.getText()));
-        FarmMe.instance.listCow();
+        //TODO: Test Radio Button
+        boolean result = farmInstance.addCow(Integer.parseInt(tagId.getText()), female.isSelected() ? "female" : "male", date, farmRising.isSelected() ? true : false, Double.parseDouble(weight.getText()));
+        farmInstance.listCow();
         if(result == false){
             System.out.println("Error dialog");
         }else{
             addCowScreen.setVisible(false);
+        }
+    }
+
+}
+
+class JAddSheep extends Gui implements ActionListener{
+    JTextField tagId = new JTextField();
+    JRadioButton male = new JRadioButton("Male");
+    JRadioButton female = new JRadioButton("Female");
+    ButtonGroup group = new ButtonGroup();
+    JTextField dob = new JTextField();
+    JLabel dobLbl = new JLabel();
+    JFrame addSheepScreen = new JFrame("Add Sheep");
+    JRadioButton purchased = new JRadioButton("purchased");
+    JRadioButton farmRising = new JRadioButton("farm-rising");
+    ButtonGroup purchasedGroup = new ButtonGroup();
+    JButton submit = new JButton();
+
+    public JAddSheep(FarmMe farm){
+        super(farm);
+    }
+
+    public void showScreen(){
+        addSheepScreen.setLayout(new GridLayout(10, 2));
+        addSheepScreen.setLocationByPlatform(true);
+
+
+        tagId.setActionCommand("tagIdInput");
+
+        JLabel tagIdLbl = new JLabel();
+        tagIdLbl.setText("TagId");
+
+        addSheepScreen.add(tagIdLbl);
+        addSheepScreen.add(tagId);
+
+
+        addSheepScreen.add(male);
+        addSheepScreen.add(female);
+
+
+
+        group.add(male);
+        group.add(female);
+
+
+        dobLbl.setText("Date Of Birth");
+
+        addSheepScreen.add(dobLbl);
+        addSheepScreen.add(dob);
+
+
+
+        addSheepScreen.add(purchased);
+        addSheepScreen.add(farmRising);
+
+
+
+        group.add(purchased);
+        group.add(farmRising);
+
+
+
+
+        submit.setActionCommand("AddSheep");
+        submit.setText("Add Sheep");
+
+        submit.addActionListener(this);
+
+        addSheepScreen.add(submit);
+
+
+        addSheepScreen.setPreferredSize(new Dimension(600, 800));
+        addSheepScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addSheepScreen.setTitle("Add Sheep");
+        addSheepScreen.pack();
+        addSheepScreen.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        LocalDate date;
+        try{
+            DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+            date = LocalDate.parse(dob.getText(), dateFormat);
+        }catch (Exception ex){
+            System.out.println("Error parse dialog");
+            return;
+        }
+
+
+        //TODO: Test Radio Button
+        boolean result = farmInstance.addSheep(Integer.parseInt(tagId.getText()), female.isSelected() ? "female" : "male", date, farmRising.isSelected() ? true : false);
+        farmInstance.listSheep();
+
+        if(result == false){
+            System.out.println("Error dialog");
+        }else{
+            addSheepScreen.setVisible(false);
         }
     }
 
