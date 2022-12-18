@@ -695,7 +695,9 @@ public class FarmMe {
 
     /**
      * First collects required data to create Veterinary object from the user, then adds new Veterinary object to the list of employees
+     * @
      */
+    @Deprecated
     public void addVet(){
         Scanner userInput = new Scanner(System.in);
 
@@ -796,9 +798,16 @@ public class FarmMe {
 
     }
 
+    public boolean addVet(int vetId, String gender, LocalDate dob, LocalDate dOfGrad, boolean hasDegree, int expertiseLevel){
+        this.employees.add(new Veterinary(vetId, gender, dob, hasDegree, dOfGrad, expertiseLevel));
+        return true;
+
+    }
+
     /**
      * First collects required data to create FarmWorker object from the user, then adds new Veterinary object to the list of employees
      */
+    @Deprecated
     public void addFarmWorker(){
         Scanner userInput = new Scanner(System.in);
 
@@ -878,23 +887,26 @@ public class FarmMe {
 
     }
 
+    public boolean addFarmWorker(int empId, String gender, LocalDate dob, String prevFarm, int workExperience){
+        return this.employees.add(new FarmWorker(empId, gender, dob, prevFarm, workExperience));
+
+    }
+
     /**
      * Finds matching veterinary object with empID deletes from the employees list. If veterinary with the provided
      * doesn't exist, it prints error message
      *
      * @param empID vets identity number
      */
-    public void deleteVet(int empID){
+    public boolean deleteVet(int empID){
         for (Employee vetTemp:
                 this.employees) {
             if(vetTemp.getEmpID() == empID && vetTemp instanceof Veterinary){
-                employees.remove(vetTemp);
-                System.out.println("Vet with empId " + empID + " deleted successfully");
-                return;
+                return employees.remove(vetTemp);
             }
         }
 
-        System.out.println("Vet with empID " + empID + " doesn't exist");
+        return false;
 
     }
 
@@ -904,17 +916,15 @@ public class FarmMe {
      *
      * @param empId employee id
      */
-    public void deleteFarmWorker(int empId){
+    public boolean deleteFarmWorker(int empId){
         for (Employee workerTemp:
                 this.employees) {
             if(workerTemp.getEmpID() == empId && workerTemp instanceof FarmWorker){
-                employees.remove(workerTemp);
-                System.out.println("Farm Worker with empId " + workerTemp + " deleted successfully");
-                return;
+                return employees.remove(workerTemp);
             }
         }
 
-        System.out.println("Farm Worker with empID " + empId + " doesn't exist");
+        return false;
 
     }
 
@@ -924,28 +934,27 @@ public class FarmMe {
      *
      * @param empID vet's employee id
      */
-    public void getVetDetails(int empID){
+    public String getVetDetails(int empID){
 
+        String vetDetails = "Vet with vetID " + empID + " doesn't exist";
         for (Employee vet:
                 employees) {
             if(vet.getEmpID() == empID && vet instanceof Veterinary){
                 DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
+                vetDetails = "";
 
-                System.out.println("Vet #" + empID);
-                System.out.println("    Gender: " + vet.getGender());
-                System.out.println("    Date of birth: " + vet.getDateOfBirth().format(dateFormat));
-                System.out.println("    Has BSc Degree: " + ((Veterinary) vet).getBScDegree());
-                System.out.println("    Date of graduation: " + ((Veterinary) vet).getDateOfGraduation().format(dateFormat));
-                System.out.println("    Expertise level: " + ((Veterinary) vet).getExpertiseLevel());
-                return;
+                vetDetails += ("Vet #" + empID + "\n");
+                vetDetails +=("    Gender: " + vet.getGender() + "\n");
+                vetDetails +=("    Date of birth: " + vet.getDateOfBirth().format(dateFormat) + "\n");
+                vetDetails += ("    Has BSc Degree: " + ((Veterinary) vet).getBScDegree() + "\n");
+                vetDetails += ("    Date of graduation: " + ((Veterinary) vet).getDateOfGraduation().format(dateFormat) + "\n");
+                vetDetails += ("    Expertise level: " + ((Veterinary) vet).getExpertiseLevel() + "\n");
+                return vetDetails;
             }
         }
 
-
-        System.out.println("Vet with vetID " + empID + " doesn't exist");
-
-
+        return vetDetails;
 
     }
 
@@ -955,29 +964,30 @@ public class FarmMe {
      *
      * @param empId farm worker's employee id
      */
-    public void getFarmWorkerDetails(int empId){
+    public String getFarmWorkerDetails(int empId){
 
+        String workerDetails = "Farm Worker with empId " + empId + " doesn't exist";
         for (Employee worker:
                 employees) {
             if(worker.getEmpID() == empId && worker instanceof FarmWorker){
                 DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
-
-                System.out.println("Farm Worker #" + empId);
-                System.out.println("    Gender: " + worker.getGender());
-                System.out.println("    Date of birth: " + worker.getDateOfBirth().format(dateFormat));
-                System.out.println("    Previous farm: " + ((FarmWorker) worker).getPreviousFarmName());
-                System.out.println("    Work experience: " + ((FarmWorker) worker).getWorkExperience());
-                return;
+                workerDetails = "";
+                workerDetails +=("Farm Worker #" + empId + "\n");
+                workerDetails +=("    Gender: " + worker.getGender() + "\n");
+                workerDetails +=("    Date of birth: " + worker.getDateOfBirth().format(dateFormat) + "\n");
+                workerDetails +=("    Previous farm: " + ((FarmWorker) worker).getPreviousFarmName() + "\n");
+                workerDetails +=("    Work experience: " + ((FarmWorker) worker).getWorkExperience() + "\n");
+                return workerDetails;
             }
         }
 
-
-        System.out.println("Farm Worker with empId " + empId + " doesn't exist");
+        return workerDetails;
 
 
 
     }
+
 
     /**
      * Add treatment to a cow with given vet id and tag number. Also gets user input about medications that are involved in the treatment.
