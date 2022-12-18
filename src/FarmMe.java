@@ -590,20 +590,20 @@ public class FarmMe {
      *
      * @param tagNo tag number of the cow
      */
-    public void deleteCow(int tagNo){
+    public boolean deleteCow(int tagNo){
         for (Animal animal:
              this.animals) {
             if(animal.getTagNo() == tagNo && animal instanceof Cow){
                 animals.remove(animal);
-                System.out.println("Cow with tagNo " + tagNo + " deleted successfully");
-                return;
+                return true;
             }
 
         }
 
-        System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+        return false;
 
     }
+
 
     /**
      * Deletes sheep object from the list of animals with the matching tagNo if exists. If sheep with tag no doesn't exist
@@ -611,18 +611,17 @@ public class FarmMe {
      *
      * @param tagNo tag number of the sheep
      */
-    public void deleteSheep(int tagNo){
+    public boolean deleteSheep(int tagNo){
         for (Animal animal:
                 this.animals) {
             if(animal.getTagNo() == tagNo && animal instanceof Sheep){
                 animals.remove(animal);
-                System.out.println("Sheep with tagNo " + tagNo + " deleted successfully");
-                return;
+                return true;
             }
 
         }
 
-        System.out.println("Sheep with tagNo " + tagNo + " doesn't exist");
+        return false;
 
     }
 
@@ -631,31 +630,32 @@ public class FarmMe {
      *
      * @param tagNo the tag no
      */
-    public void getCowDetails(int tagNo){
-
+    public String getCowDetails(int tagNo){
+        String cowDetails = "Cow with tagNo " + tagNo + " doesn't exist";
 
         for (Animal animal:
              this.animals) {
             if(animal.getTagNo() == tagNo && animal instanceof Cow){
                 DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
+                cowDetails = "";
 
-                System.out.println("Cow #" + tagNo);
-                System.out.println("    Gender: " + animal.getGender());
-                System.out.println("    Date of birth: " + animal.getDateOfBirth().format(dateFormat));
-                System.out.println("    Age: " + animal.getAge());
-                System.out.println("    Purchase Status: " + (animal.getPurchased() ? "Purchased" : "Farm-rising"));
-                System.out.println("    Weight: " + ((Cow) animal).getWeight());
-                System.out.println("    Milking Records: ");
+                cowDetails += ("Cow #" + tagNo + "\n");
+                cowDetails += ("    Gender: " + animal.getGender() + "\n");
+                cowDetails += ("    Date of birth: " + animal.getDateOfBirth().format(dateFormat) + "\n");
+                cowDetails += ("    Age: " + animal.getAge() + "\n");
+                cowDetails += ("    Purchase Status: " + (animal.getPurchased() ? "Purchased" : "Farm-rising") + "\n");
+                cowDetails += ("    Weight: " + ((Cow) animal).getWeight() + "\n");
+                cowDetails += ("    Milking Records: " + "\n");
                 for(LocalDate dateKey : animal.getMilking().keySet()){
-                    System.out.println("        " + dateKey.format(dateFormat) + ": " + animal.getMilking().get(dateKey));
+                    cowDetails += ("        " + dateKey.format(dateFormat) + ": " + animal.getMilking().get(dateKey) + "\n");
 
                 }
-                return;
+                return cowDetails;
             }
         }
 
-        System.out.println("Cow with tagNo " + tagNo + " doesn't exist");
+        return cowDetails;
 
     }
 
@@ -665,29 +665,31 @@ public class FarmMe {
      *
      * @param tagNo the tag no
      */
-    public void getSheepDetails(int tagNo){
-
+    public String getSheepDetails(int tagNo){
+        String sheepDetails = "Sheep with tagNo " + tagNo + " doesn't exist";
 
         for (Animal animal:
                 this.animals) {
             if(animal.getTagNo() == tagNo && animal instanceof Sheep){
                 DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
-                System.out.println("Sheep #" + tagNo);
-                System.out.println("    Gender: " + animal.getGender());
-                System.out.println("    Date of birth: " + animal.getDateOfBirth().format(dateFormat));
-                System.out.println("    Age: " + animal.getAge());
-                System.out.println("    Purchase Status: " + (animal.getPurchased() ? "Purchased" : "Farm-rising"));
-                System.out.println("    Milking Records:");
+                sheepDetails = "";
+
+                sheepDetails +=("Sheep #" + tagNo + "\n");
+                sheepDetails +=("    Gender: " + animal.getGender() + "\n");
+                sheepDetails +=("    Date of birth: " + animal.getDateOfBirth().format(dateFormat) + "\n");
+                sheepDetails +=("    Age: " + animal.getAge() + "\n");
+                sheepDetails +=("    Purchase Status: " + (animal.getPurchased() ? "Purchased" : "Farm-rising") + "\n");
+                sheepDetails +=("    Milking Records:" + "\n");
                 for(LocalDate dateKey : animal.getMilking().keySet()){
-                    System.out.println("        " + dateKey.format(dateFormat) + ": " + animal.getMilking().get(dateKey));
+                    sheepDetails +=("        " + dateKey.format(dateFormat) + ": " + animal.getMilking().get(dateKey) + "\n");
 
                 }
-                return;
+                return sheepDetails;
             }
         }
 
-        System.out.println("Sheep with tagNo " + tagNo + " doesn't exist");
+        return sheepDetails;
 
     }
 

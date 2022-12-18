@@ -52,16 +52,27 @@ public class Gui extends JFrame implements ActionListener {
 
         opt1.setActionCommand("addCowScreen");
         opt2.setActionCommand("addSheepScreen");
+        opt3.setActionCommand("deleteCowScreen");
+        opt4.setActionCommand("deleteSheepScreen");
+        opt5.setActionCommand("cowDetailsScreen");
+        opt6.setActionCommand("sheepDetailsScreen");
 
 
         opt1.addActionListener(this);
         opt2.addActionListener(this);
+        opt3.addActionListener(this);
+        opt4.addActionListener(this);
+        opt5.addActionListener(this);
+        opt6.addActionListener(this);
 
 
 
         menu.add(opt1);
         menu.add(opt2);
         menu.add(opt3);
+        menu.add(opt4);
+        menu.add(opt5);
+        menu.add(opt6);
 
         bar.add(menu);
         mainMenu.add(bar);
@@ -86,6 +97,14 @@ public class Gui extends JFrame implements ActionListener {
             new JAddCow(farmInstance).showScreen();
         }else if(event.equalsIgnoreCase("addSheepScreen")){
             new JAddSheep(farmInstance).showScreen();
+        }else if(event.equalsIgnoreCase("deleteCowScreen")){
+            new JDeleteCow(farmInstance).showScreen();
+        }else if(event.equalsIgnoreCase("deleteSheepScreen")){
+            new JDeleteSheep(farmInstance).showScreen();
+        }else if(event.equalsIgnoreCase("cowDetailsScreen")){
+            new JCowDetails(farmInstance).showScreen();
+        }else if(event.equalsIgnoreCase("sheepDetailsScreen")){
+            new JSheepDetails(farmInstance).showScreen();
         }
 
     }
@@ -291,6 +310,232 @@ class JAddSheep extends Gui implements ActionListener{
         }else{
             addSheepScreen.setVisible(false);
         }
+    }
+
+}
+
+class JDeleteCow extends Gui implements ActionListener{
+    JTextField tagId = new JTextField();
+    JFrame deleteCowScreen = new JFrame("Delete Cow");
+    JButton submit = new JButton();
+
+    public JDeleteCow(FarmMe farm){
+        super(farm);
+    }
+
+    public void showScreen(){
+        deleteCowScreen.setLayout(new GridLayout(10, 2));
+        deleteCowScreen.setLocationByPlatform(true);
+
+
+        tagId.setActionCommand("tagIdInput");
+
+        JLabel tagIdLbl = new JLabel();
+        tagIdLbl.setText("TagId");
+
+        deleteCowScreen.add(tagIdLbl);
+        deleteCowScreen.add(tagId);
+
+
+        submit.setActionCommand("DeleteCow");
+        submit.setText("Delete Cow");
+
+        submit.addActionListener(this);
+
+        deleteCowScreen.add(submit);
+
+
+        deleteCowScreen.setPreferredSize(new Dimension(600, 800));
+        deleteCowScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        deleteCowScreen.setTitle("Delete Cow");
+        deleteCowScreen.pack();
+        deleteCowScreen.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        //TODO: Test Radio Button
+        boolean result = farmInstance.deleteCow(Integer.parseInt(tagId.getText()));
+        farmInstance.listCow();
+        if(result == false){
+            System.out.println("Error dialog");
+        }else{
+            deleteCowScreen.setVisible(false);
+        }
+    }
+
+}
+
+class JDeleteSheep extends Gui implements ActionListener{
+    JTextField tagId = new JTextField();
+    JFrame deleteCowScreen = new JFrame("Delete Sheep");
+    JButton submit = new JButton();
+
+    public JDeleteSheep(FarmMe farm){
+        super(farm);
+    }
+
+    public void showScreen(){
+        deleteCowScreen.setLayout(new GridLayout(10, 2));
+        deleteCowScreen.setLocationByPlatform(true);
+
+
+        tagId.setActionCommand("tagIdInput");
+
+        JLabel tagIdLbl = new JLabel();
+        tagIdLbl.setText("TagId");
+
+        deleteCowScreen.add(tagIdLbl);
+        deleteCowScreen.add(tagId);
+
+
+        submit.setActionCommand("DeleteSheep");
+        submit.setText("Delete Sheep");
+
+        submit.addActionListener(this);
+
+        deleteCowScreen.add(submit);
+
+
+        deleteCowScreen.setPreferredSize(new Dimension(600, 800));
+        deleteCowScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        deleteCowScreen.setTitle("Delete Sheep");
+        deleteCowScreen.pack();
+        deleteCowScreen.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        //TODO: Test Radio Button
+        boolean result = farmInstance.deleteSheep(Integer.parseInt(tagId.getText()));
+        farmInstance.listSheep();
+        if(result == false){
+            System.out.println("Error dialog");
+        }else{
+            deleteCowScreen.setVisible(false);
+        }
+    }
+
+}
+
+class JCowDetails extends Gui implements ActionListener{
+    JTextField tagId = new JTextField();
+    JFrame deleteCowScreen = new JFrame("Cow Details");
+    JButton submit = new JButton();
+    JTextArea infoArea = new JTextArea("");
+
+    public JCowDetails(FarmMe farm){
+        super(farm);
+    }
+
+    public void showScreen(){
+        deleteCowScreen.setLayout(new GridLayout(10, 2));
+        deleteCowScreen.setLocationByPlatform(true);
+
+
+        tagId.setActionCommand("tagIdInput");
+
+        JLabel tagIdLbl = new JLabel();
+        tagIdLbl.setText("TagId");
+
+        deleteCowScreen.add(tagIdLbl);
+        deleteCowScreen.add(tagId);
+
+
+
+
+
+        submit.setActionCommand("GetCowDetails");
+        submit.setText("Get Cow Details");
+
+        submit.addActionListener(this);
+
+        infoArea.setEditable(false);
+        infoArea.setBackground(null);
+
+
+        JScrollPane zScrollPane = new JScrollPane(infoArea);
+
+        deleteCowScreen.add(submit);
+        deleteCowScreen.add(zScrollPane);
+
+
+        deleteCowScreen.setPreferredSize(new Dimension(600, 800));
+        deleteCowScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        deleteCowScreen.setTitle("Get Cow Details");
+        deleteCowScreen.pack();
+        deleteCowScreen.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        //TODO: Test Radio Button
+        String detail = farmInstance.getCowDetails(Integer.parseInt(tagId.getText()));
+        System.out.println(detail);
+        infoArea.setText(detail);
+    }
+
+}
+
+class JSheepDetails extends Gui implements ActionListener{
+    JTextField tagId = new JTextField();
+    JFrame screen = new JFrame("Sheep Details");
+    JButton submit = new JButton();
+    JTextArea infoArea = new JTextArea("");
+
+    public JSheepDetails(FarmMe farm){
+        super(farm);
+    }
+
+    public void showScreen(){
+        screen.setLayout(new GridLayout(10, 2));
+        screen.setLocationByPlatform(true);
+
+
+        tagId.setActionCommand("tagIdInput");
+
+        JLabel tagIdLbl = new JLabel();
+        tagIdLbl.setText("TagId");
+
+        screen.add(tagIdLbl);
+        screen.add(tagId);
+
+
+
+
+
+        submit.setActionCommand("GetSheepDetails");
+        submit.setText("Get Sheep Details");
+
+        submit.addActionListener(this);
+
+        infoArea.setEditable(false);
+        infoArea.setBackground(null);
+
+
+        JScrollPane zScrollPane = new JScrollPane(infoArea);
+
+        screen.add(submit);
+        screen.add(zScrollPane);
+
+
+        screen.setPreferredSize(new Dimension(600, 800));
+        screen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        screen.setTitle("Get Sheep Details");
+        screen.pack();
+        screen.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        //TODO: Test Radio Button
+        String detail = farmInstance.getSheepDetails(Integer.parseInt(tagId.getText()));
+        System.out.println(detail);
+        infoArea.setText(detail);
     }
 
 }
