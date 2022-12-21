@@ -38,11 +38,21 @@ public class FarmMe {
      */
     public static void main(String[] args){
 
+        //FarmMe farm = PopulateData.populate();
+        StorageManager storageManager = new StorageManager();
+        try {
+            storageManager.InitializeStorage();
+            //storageManager.populateAnimalList();
+        }catch (Exception e){
 
-        FarmMe farm = PopulateData.populate();
-        Gui gui = new Gui(farm);
+
+        }
+
+
+
+        Gui gui = new Gui(storageManager.farm);
         gui.showGUI();
-        farm.menu();
+        //storageManager.farm.menu();
     }
 
     /**
@@ -1475,89 +1485,93 @@ public class FarmMe {
     /**
      * Lists all the cows that are found in the app with their details
      */
-    public void listCow(){
+    public String listCow(){
+        String details = "All cows that are in the system: \n";
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
-
-        System.out.println("All cows that are in the system: ");
 
         for (Animal cow:
              this.animals) {
             if(cow instanceof Cow){
-                System.out.println("Cow with tag number: " + cow.getTagNo());
-                System.out.println("    Gender: " + cow.getGender());
-                System.out.println("    Date of birth: " + cow.getDateOfBirth().format(dateFormat));
-                System.out.println("    Age: " + cow.getAge());
-                System.out.println("    Type: " + (cow.getPurchased() ? "Purchased" : "Farm-rising"));
-                System.out.println("    Weight: " + ((Cow) cow).getWeight());
+                details += ("Cow with tag number: " + cow.getTagNo() + "\n");
+                details += ("    Gender: " + cow.getGender() + "\n");
+                details += ("    Date of birth: " + cow.getDateOfBirth().format(dateFormat) + "\n");
+                details += ("    Age: " + cow.getAge() + "\n");
+                details += ("    Type: " + (cow.getPurchased() ? "Purchased" : "Farm-rising") + "\n");
+                details += ("    Weight: " + ((Cow) cow).getWeight() + "\n");
             }
 
 
 
         }
+        return details;
     }
 
     /**
      * Lists all the sheep that are found in the app with their details
      */
-    public void listSheep(){
+    public String listSheep(){
+        String details = "All sheep that are in the system: \n";
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
-
-        System.out.println("All sheep that are in the system: ");
 
         for (Animal sheep:
                 this.animals) {
             if(sheep instanceof Sheep){
-                System.out.println("Sheep with tag number: " + sheep.getTagNo());
-                System.out.println("    Gender: " + sheep.getGender());
-                System.out.println("    Date of birth: " + sheep.getDateOfBirth().format(dateFormat));
-                System.out.println("    Age: " + sheep.getAge());
-                System.out.println("    Type: " + (sheep.getPurchased() ? "Purchased" : "Farm-rising"));
+                details +=  ("Sheep with tag number: " + sheep.getTagNo() + "\n");
+                details +=  ("    Gender: " + sheep.getGender()  + "\n");
+                details +=  ("    Date of birth: " + sheep.getDateOfBirth().format(dateFormat) + "\n");
+                details +=  ("    Age: " + sheep.getAge() + "\n");
+                details += ("    Type: " + (sheep.getPurchased() ? "Purchased" : "Farm-rising") + "\n");
             }
 
 
 
         }
+
+        return details;
     }
 
     /**
      * Lists all the vets that are found in the app with their details
      */
-    public void listVet(){
-        System.out.println("All vets that are in the system: ");
+    public String listVet(){
+        String details = "All vets that are in the system: \n";
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
         for (Employee vet:
                 this.employees) {
             if(vet instanceof Veterinary){
-                System.out.println("Vet #" + vet.getEmpID());
-                System.out.println("    Gender: " + vet.getGender());
-                System.out.println("    Date of birth: " + vet.getDateOfBirth().format(dateFormat));
-                System.out.println("    Has BSc Degree: $" + ((Veterinary) vet).getBScDegree());
-                System.out.println("    Date of graduation: $" + ((Veterinary) vet).getDateOfGraduation().format(dateFormat));
-                System.out.println("    Expertise level: $" + ((Veterinary) vet).getExpertiseLevel());
+                details +=  ("Vet #" + vet.getEmpID()  + "\n");
+                details +=  ("    Gender: " + vet.getGender()  + "\n");
+                details +=  ("    Date of birth: " + vet.getDateOfBirth().format(dateFormat)  + "\n");
+                details +=  ("    Has BSc Degree: $" + ((Veterinary) vet).getBScDegree()  + "\n");
+                details +=  ("    Date of graduation: $" + ((Veterinary) vet).getDateOfGraduation().format(dateFormat)  + "\n");
+                details +=  ("    Expertise level: $" + ((Veterinary) vet).getExpertiseLevel() + "\n");
             }
 
         }
+
+        return details;
     }
 
     /**
      * Lists all the farm workers that are found in the app with their details
      */
-    public void listFarmWorker(){
-        System.out.println("All farm workers that are in the system: ");
+    public String listFarmWorker(){
+        String details = "All farm workers that are in the system: \n";
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
         for (Employee worker:
                 this.employees) {
             if(worker instanceof FarmWorker){
-                System.out.println("Farm Worker #" + worker.getEmpID());
-                System.out.println("    Gender: " + worker.getGender());
-                System.out.println("    Date of birth: " + worker.getDateOfBirth().format(dateFormat));
-                System.out.println("    Previous farm: " + ((FarmWorker) worker).getPreviousFarmName());
-                System.out.println("    Work experience: " + ((FarmWorker) worker).getWorkExperience());
+                details +=  ("Farm Worker #" + worker.getEmpID()  + "\n");
+                details +=  ("    Gender: " + worker.getGender() + "\n");
+                details +=  ("    Date of birth: " + worker.getDateOfBirth().format(dateFormat) + "\n");
+                details +=  ("    Previous farm: " + ((FarmWorker) worker).getPreviousFarmName() + "\n");
+                details +=  ("    Work experience: " + ((FarmWorker) worker).getWorkExperience() + "\n");
             }
 
         }
+        return details;
     }
 
 
@@ -1566,8 +1580,10 @@ public class FarmMe {
      *
      * @param tagNo the tag no
      */
-    public void feedingAnimal(int tagNo){
+    public String feedingAnimal(int tagNo){
         Animal animal = null;
+
+        String detail = "Animal with tagNo " + tagNo + " doesn't exist";
 
         for (Animal animalTemp:
                 this.animals) {
@@ -1578,12 +1594,13 @@ public class FarmMe {
 
         }
         if(animal == null){
-            System.out.println("Animal with tagNo " + tagNo + " doesn't exist");
-            return;
+            return detail;
         }
 
-        System.out.println("Feeding information about " + (animal instanceof Sheep ? "Sheep" : "Cow") + "is provided below: ");
-        animal.feeding();
+        detail = "Feeding information about " + (animal instanceof Sheep ? "Sheep" : "Cow") + "is provided below: \n";
+        detail += animal.feeding();
+
+        return detail;
     }
 
     /**
@@ -1620,7 +1637,7 @@ public class FarmMe {
      * @param tagNo  the tag no
      * @param amount amount that is milked
      */
-    public void addMilkingMeasurement(int tagNo, double amount){
+    public boolean addMilkingMeasurement(int tagNo, double amount){
         Animal animal = null;
 
         for (Animal animalTemp:
@@ -1632,20 +1649,18 @@ public class FarmMe {
 
         }
         if(animal == null){
-            System.out.println("Animal with tagNo " + tagNo + " doesn't exist");
-            return;
+            return false;
         }
 
 
         if(animal.getMilking().containsKey(LocalDate.now())){
-            System.out.println("Milking already recorded for this animal today");
-            return;
+            return false;
         }
 
         animal.getMilking().put(LocalDate.now(), amount);
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
-        System.out.println("Milking dated "+ LocalDate.now().format(dateFormat) + " for animal with tagNo" + tagNo + " is recorded.");
+        return true;
 
     }
 

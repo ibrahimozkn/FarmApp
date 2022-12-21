@@ -20,7 +20,7 @@ public abstract class Animal {
     /**
      * Feeding information provider method.
      */
-    public abstract void feeding();
+    public abstract String feeding();
 
     /**
      * Calculates the age of the cow and returns the resulting number.

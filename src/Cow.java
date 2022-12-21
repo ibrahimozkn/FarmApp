@@ -86,23 +86,23 @@ public class Cow extends Animal{
     * Provides feeding information about cow according to its age or weight
     *
     * */
-    public void feeding(){
+    public String feeding(){
         if(this.getAge() < 3){
-            System.out.println("Only grass");
+            return  "Only grass";
         }else if(this.getAge() > 5 && this.weight < 500){
-            System.out.println("Total mixed ration (TMR) where includes hay, fermented grass (silage), maize silage and high energy grains like brewers grains, soy bean, cotton seed and citrus pulp.");
+            return "Total mixed ration (TMR) where includes hay, fermented grass (silage), maize silage and high energy grains like brewers grains, soy bean, cotton seed and citrus pulp.";
                     /*
            needs Total mixed ration (TMR) is a diet that
         includes hay, fermented grass (silage), maize silage and
         high energy grains like brewers grains, soy bean, cotton
         seed and citrus pulp.*/
         }else if(this.getAge() > 10){
-            System.out.println("Grains and oilseed meals");
+            return ("Grains and oilseed meals");
 
             /*If a cow is older than 10 years old, it needs grains and oilseed
             meals.*/
         }else{
-            System.out.println("Grass and grains");
+            return ("Grass and grains");
 
             /*In all other cases, the cow needs be fed with grass and grains.*/
         }
