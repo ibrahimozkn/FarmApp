@@ -68,6 +68,7 @@ public class Gui extends JFrame implements ActionListener {
         opt19.setActionCommand("listFarmWorkerScreen");
         opt20.setActionCommand("animalFeedingInfoScreen");
         opt21.setActionCommand("getEmployeeSalaryScreen");
+        opt22.setActionCommand("addMilkingScreen");
 
 
         opt1.addActionListener(this);
@@ -88,6 +89,7 @@ public class Gui extends JFrame implements ActionListener {
         opt19.addActionListener(this);
         opt20.addActionListener(this);
         opt21.addActionListener(this);
+        opt22.addActionListener(this);
 
 
 
@@ -109,6 +111,7 @@ public class Gui extends JFrame implements ActionListener {
         menu.add(opt19);
         menu.add(opt20);
         menu.add(opt21);
+        menu.add(opt22);
 
         bar.add(menu);
         mainMenu.add(bar);
@@ -117,7 +120,7 @@ public class Gui extends JFrame implements ActionListener {
 
 
         mainMenu.setPreferredSize(new Dimension(600, 800));
-        mainMenu.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        mainMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainMenu.setTitle("Main Menu");
         mainMenu.pack();
         mainMenu.setVisible(true);
@@ -165,6 +168,8 @@ public class Gui extends JFrame implements ActionListener {
             new JFeedingInfo(farmInstance).showScreen();
         }else if(event.equalsIgnoreCase("getEmployeeSalaryScreen")){
             new JSalaryInfo(farmInstance).showScreen();
+        }else if(event.equalsIgnoreCase("addMilkingScreen")){
+            new JAddMilking(farmInstance).showScreen();
         }
 
 
@@ -186,6 +191,7 @@ class JAddCow extends Gui implements ActionListener{
     JLabel weightLbl = new JLabel();
     ButtonGroup purchasedGroup = new ButtonGroup();
     JButton submit = new JButton();
+    JComboBox gender;
 
     public JAddCow(FarmMe farm){
         super(farm);
@@ -205,13 +211,12 @@ class JAddCow extends Gui implements ActionListener{
         addCowScreen.add(tagId);
 
 
-        addCowScreen.add(male);
-        addCowScreen.add(female);
+        String genderList[] = { "male", "female"};
 
+        gender = new JComboBox(genderList);
 
+        addCowScreen.add(gender);
 
-        group.add(male);
-        group.add(female);
 
 
         dobLbl.setText("Date Of Birth");
@@ -255,6 +260,7 @@ class JAddCow extends Gui implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println(gender.getSelectedItem().toString());
         LocalDate date;
         try{
             DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
@@ -266,7 +272,7 @@ class JAddCow extends Gui implements ActionListener{
 
 
         //TODO: Test Radio Button
-        boolean result = farmInstance.addCow(Integer.parseInt(tagId.getText()), female.isSelected() ? "female" : "male", date, farmRising.isSelected() ? true : false, Double.parseDouble(weight.getText()));
+        boolean result = farmInstance.addCow(Integer.parseInt(tagId.getText()), gender.getSelectedItem().toString(), date, farmRising.isSelected() ? true : false, Double.parseDouble(weight.getText()));
         farmInstance.listCow();
         if(result == false){
             System.out.println("Error dialog");
@@ -969,10 +975,8 @@ class JFarmWorkerDetails extends Gui implements ActionListener{
 
 }
 
-class JListCows extends Gui implements ActionListener{
+class JListCows extends Gui{
     JFrame screen = new JFrame("List Cows");
-    JTextArea infoArea = new JTextArea("");
-    JButton submit = new JButton();
 
 
     public JListCows(FarmMe farm){
@@ -983,17 +987,10 @@ class JListCows extends Gui implements ActionListener{
         screen.setLayout(new GridLayout(10, 2));
         screen.setLocationByPlatform(true);
 
-        submit.setText("List Cows");
 
-        submit.addActionListener(this);
+        JTable table= new JTable(farmInstance.listCow());
+        JScrollPane scrollPane = new JScrollPane(table);
 
-        infoArea.setEditable(false);
-        infoArea.setBackground(null);
-
-
-        JScrollPane scrollPane = new JScrollPane(infoArea);
-
-        screen.add(submit);
         screen.add(scrollPane);
 
 
@@ -1004,20 +1001,10 @@ class JListCows extends Gui implements ActionListener{
         screen.setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        //TODO: Test Radio Button
-        String detail = farmInstance.listCow();
-        infoArea.setText(detail);
-    }
-
 }
 
-class JListSheep extends Gui implements ActionListener{
+class JListSheep extends Gui{
     JFrame screen = new JFrame("List Sheep");
-    JTextArea infoArea = new JTextArea("");
-    JButton submit = new JButton();
 
 
     public JListSheep(FarmMe farm){
@@ -1028,17 +1015,11 @@ class JListSheep extends Gui implements ActionListener{
         screen.setLayout(new GridLayout(10, 2));
         screen.setLocationByPlatform(true);
 
-        submit.setText("List Sheep");
-
-        submit.addActionListener(this);
-
-        infoArea.setEditable(false);
-        infoArea.setBackground(null);
 
 
-        JScrollPane scrollPane = new JScrollPane(infoArea);
+        JTable table= new JTable(farmInstance.listSheep());
+        JScrollPane scrollPane = new JScrollPane(table);
 
-        screen.add(submit);
         screen.add(scrollPane);
 
 
@@ -1049,21 +1030,11 @@ class JListSheep extends Gui implements ActionListener{
         screen.setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        //TODO: Test Radio Button
-        String detail = farmInstance.listSheep();
-        infoArea.setText(detail);
-    }
 
 }
 
-class JListVet extends Gui implements ActionListener{
+class JListVet extends Gui{
     JFrame screen = new JFrame("List Vet");
-    JTextArea infoArea = new JTextArea("");
-    JButton submit = new JButton();
-
 
     public JListVet(FarmMe farm){
         super(farm);
@@ -1073,18 +1044,11 @@ class JListVet extends Gui implements ActionListener{
         screen.setLayout(new GridLayout(10, 2));
         screen.setLocationByPlatform(true);
 
-        submit.setText("List Vet");
 
-        submit.addActionListener(this);
-
-        infoArea.setEditable(false);
-        infoArea.setBackground(null);
-
-
-        JScrollPane scrollPane = new JScrollPane(infoArea);
+        JTable table= new JTable(farmInstance.listVet());
+        JScrollPane scrollPane = new JScrollPane(table);
 
         screen.add(scrollPane);
-        screen.add(submit);
 
 
         screen.setPreferredSize(new Dimension(600, 800));
@@ -1094,21 +1058,10 @@ class JListVet extends Gui implements ActionListener{
         screen.setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        //TODO: Test Radio Button
-        String detail = farmInstance.listVet();
-        infoArea.setText(detail);
-    }
-
 }
 
-class JListFarmWorker extends Gui implements ActionListener{
+class JListFarmWorker extends Gui{
     JFrame screen = new JFrame("List Farm Worker");
-    JTextArea infoArea = new JTextArea("");
-    JButton submit = new JButton();
-
 
     public JListFarmWorker(FarmMe farm){
         super(farm);
@@ -1118,18 +1071,11 @@ class JListFarmWorker extends Gui implements ActionListener{
         screen.setLayout(new GridLayout(10, 2));
         screen.setLocationByPlatform(true);
 
-        submit.setText("List Farm Worker");
 
-        submit.addActionListener(this);
-
-        infoArea.setEditable(false);
-        infoArea.setBackground(null);
-
-
-        JScrollPane scrollPane = new JScrollPane(infoArea);
+        JTable table= new JTable(farmInstance.listFarmWorker());
+        JScrollPane scrollPane = new JScrollPane(table);
 
         screen.add(scrollPane);
-        screen.add(submit);
 
 
         screen.setPreferredSize(new Dimension(600, 800));
@@ -1137,14 +1083,6 @@ class JListFarmWorker extends Gui implements ActionListener{
         screen.setTitle("List Farm Worker");
         screen.pack();
         screen.setVisible(true);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        //TODO: Test Radio Button
-        String detail = farmInstance.listFarmWorker();
-        infoArea.setText(detail);
     }
 
 }
@@ -1253,7 +1191,7 @@ class JSalaryInfo extends Gui implements ActionListener{
 }
 
 class JAddMilking extends Gui implements ActionListener{
-    JFrame screen = new JFrame("Add vet");
+    JFrame screen = new JFrame("Add Milking");
 
     JTextField tagId = new JTextField();
     JLabel tagIdLbl = new JLabel("Vet Id");

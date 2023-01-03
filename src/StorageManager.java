@@ -14,8 +14,8 @@ public class StorageManager {
             animalStorage.createNewFile();
         }
 
-        animalReader = new DataInputStream(new FileInputStream(animalStorage));
-        animalWriter = new DataOutputStream(new FileOutputStream(animalStorage, true));
+        animalReader = new DataInputStream(new BufferedInputStream(new FileInputStream(animalStorage)));
+        animalWriter = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(animalStorage, true)));
     }
 
     public StorageManager(){

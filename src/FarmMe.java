@@ -1,3 +1,6 @@
+import javax.swing.table.DefaultTableModel;
+import javax.xml.crypto.Data;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -31,6 +34,8 @@ public class FarmMe {
      */
     public ArrayList<Employee> employees;
 
+    public DataStorage dataStorage;
+
     /**
      * Main method that is executed when program runs.
      *
@@ -38,19 +43,27 @@ public class FarmMe {
      */
     public static void main(String[] args){
 
-        //FarmMe farm = PopulateData.populate();
-        StorageManager storageManager = new StorageManager();
-        try {
-            storageManager.InitializeStorage();
-            //storageManager.populateAnimalList();
+        FarmMe farm = null;
+        try{
+            farm = new FarmMe();
+            farm.dataStorage.writeData(farm);
         }catch (Exception e){
-
-
+            System.out.println(e);
         }
 
 
+        
+        /*StorageManager storageManager = new StorageManager();
+        try {
+            storageManager.InitializeStorage();
+        }catch (Exception e){
 
-        Gui gui = new Gui(storageManager.farm);
+
+        }*/
+
+
+
+        Gui gui = new Gui(farm);
         gui.showGUI();
         //storageManager.farm.menu();
     }
@@ -1485,93 +1498,89 @@ public class FarmMe {
     /**
      * Lists all the cows that are found in the app with their details
      */
-    public String listCow(){
-        String details = "All cows that are in the system: \n";
+    public DefaultTableModel listCow(){
+        String[] column = { "Tag No", "Gender", "Dob", "Age", "Purchased", "Weight" };
+        DefaultTableModel model = new DefaultTableModel(column, 0);
+        //String details = "All cows that are in the system: \n";
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+
+        ArrayList<ArrayList<String>> data = new ArrayList<>();
 
         for (Animal cow:
              this.animals) {
             if(cow instanceof Cow){
-                details += ("Cow with tag number: " + cow.getTagNo() + "\n");
-                details += ("    Gender: " + cow.getGender() + "\n");
-                details += ("    Date of birth: " + cow.getDateOfBirth().format(dateFormat) + "\n");
-                details += ("    Age: " + cow.getAge() + "\n");
-                details += ("    Type: " + (cow.getPurchased() ? "Purchased" : "Farm-rising") + "\n");
-                details += ("    Weight: " + ((Cow) cow).getWeight() + "\n");
+                String[] row = {"" + cow.getTagNo(), cow.getGender(), cow.getDateOfBirth().format(dateFormat), cow.getAge() + "", (cow.getPurchased() ? "Purchased" : "Farm-rising"), ((Cow) cow).getWeight() + ""};
+                model.addRow(row);
             }
 
 
 
         }
-        return details;
+        return model;
     }
 
     /**
      * Lists all the sheep that are found in the app with their details
      */
-    public String listSheep(){
-        String details = "All sheep that are in the system: \n";
+    public DefaultTableModel listSheep(){
+        String[] column = { "Tag No", "Gender", "Dob", "Age", "Purchased"};
+        DefaultTableModel model = new DefaultTableModel(column, 0);
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
         for (Animal sheep:
                 this.animals) {
             if(sheep instanceof Sheep){
-                details +=  ("Sheep with tag number: " + sheep.getTagNo() + "\n");
-                details +=  ("    Gender: " + sheep.getGender()  + "\n");
-                details +=  ("    Date of birth: " + sheep.getDateOfBirth().format(dateFormat) + "\n");
-                details +=  ("    Age: " + sheep.getAge() + "\n");
-                details += ("    Type: " + (sheep.getPurchased() ? "Purchased" : "Farm-rising") + "\n");
+                String[] row = {"" + sheep.getTagNo(), sheep.getGender(), sheep.getDateOfBirth().format(dateFormat), sheep.getAge() + "", (sheep.getPurchased() ? "Purchased" : "Farm-rising")};
+                model.addRow(row);
             }
 
 
 
         }
 
-        return details;
+        return model;
     }
 
     /**
      * Lists all the vets that are found in the app with their details
      */
-    public String listVet(){
-        String details = "All vets that are in the system: \n";
+    public DefaultTableModel listVet(){
+        String[] column = { "Vet Id", "Gender", "Dob", "Has Degree", "Date of Grad", "Expertise Level"};
+        DefaultTableModel model = new DefaultTableModel(column, 0);
+
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
         for (Employee vet:
                 this.employees) {
             if(vet instanceof Veterinary){
-                details +=  ("Vet #" + vet.getEmpID()  + "\n");
-                details +=  ("    Gender: " + vet.getGender()  + "\n");
-                details +=  ("    Date of birth: " + vet.getDateOfBirth().format(dateFormat)  + "\n");
-                details +=  ("    Has BSc Degree: $" + ((Veterinary) vet).getBScDegree()  + "\n");
-                details +=  ("    Date of graduation: $" + ((Veterinary) vet).getDateOfGraduation().format(dateFormat)  + "\n");
-                details +=  ("    Expertise level: $" + ((Veterinary) vet).getExpertiseLevel() + "\n");
+                String[] row = {"" + vet.getEmpID(), vet.getGender(), vet.getDateOfBirth().format(dateFormat), ((Veterinary) vet).getBScDegree() + "", ((Veterinary) vet).getDateOfGraduation().format(dateFormat), ((Veterinary) vet).getExpertiseLevel() + ""};
+                model.addRow(row);
             }
 
         }
 
-        return details;
+        return model;
     }
 
     /**
      * Lists all the farm workers that are found in the app with their details
      */
-    public String listFarmWorker(){
+    public DefaultTableModel listFarmWorker(){
+        String[] column = { "Vet Id", "Gender", "Dob", "Previous Farm", "Work experience"};
+        DefaultTableModel model = new DefaultTableModel(column, 0);
+
         String details = "All farm workers that are in the system: \n";
         DateTimeFormatter dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 
         for (Employee worker:
                 this.employees) {
             if(worker instanceof FarmWorker){
-                details +=  ("Farm Worker #" + worker.getEmpID()  + "\n");
-                details +=  ("    Gender: " + worker.getGender() + "\n");
-                details +=  ("    Date of birth: " + worker.getDateOfBirth().format(dateFormat) + "\n");
-                details +=  ("    Previous farm: " + ((FarmWorker) worker).getPreviousFarmName() + "\n");
-                details +=  ("    Work experience: " + ((FarmWorker) worker).getWorkExperience() + "\n");
+                String[] row = {"" + worker.getEmpID(), worker.getGender(), worker.getDateOfBirth().format(dateFormat), ((FarmWorker) worker).getPreviousFarmName(), ((FarmWorker) worker).getWorkExperience() + ""};
+                model.addRow(row);
             }
 
         }
-        return details;
+        return model;
     }
 
 
@@ -1676,9 +1685,9 @@ public class FarmMe {
     /**
      * Instantiates a new Farm me with empty animal and employee list
      */
-    public FarmMe(){
-        this.animals = new ArrayList<Animal>();
-        this.employees = new ArrayList<Employee>();
+    public FarmMe() throws SQLException, ClassNotFoundException {
+        this.dataStorage = new DataStorage();
+        dataStorage.readData(this);
     }
 
     /**
