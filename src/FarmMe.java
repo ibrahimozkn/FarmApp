@@ -46,7 +46,6 @@ public class FarmMe {
         FarmMe farm = null;
         try{
             farm = new FarmMe();
-            farm.dataStorage.writeData(farm);
         }catch (Exception e){
             System.out.println(e);
         }

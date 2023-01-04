@@ -1,3 +1,7 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,13 +13,24 @@ import java.util.HashMap;
  * @version 1.0
  * @since 1.0
  */
-public abstract class Animal {
+public abstract class Animal implements Serializable {
     private int tagNo;
     private String gender;
-    private LocalDate dateOfBirth;
+    private transient LocalDate dateOfBirth;
     private boolean purchased;
     private HashMap<LocalDate, Double> milking;
     private ArrayList<Treatment> treatments;
+
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeObject(dateOfBirth.toString());
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        dateOfBirth = LocalDate.parse((String) in.readObject());
+    }
 
     /**
      * Feeding information provider method.
