@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -121,6 +123,15 @@ public class Gui extends JFrame implements ActionListener {
 
         mainMenu.setPreferredSize(new Dimension(600, 800));
         mainMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        mainMenu.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                farmInstance.exit();
+
+            }
+        });
+
         mainMenu.setTitle("Main Menu");
         mainMenu.pack();
         mainMenu.setVisible(true);
@@ -1236,6 +1247,34 @@ class JAddMilking extends Gui implements ActionListener{
         }else{
             screen.setVisible(false);
         }
+    }
+
+}
+
+class JInfoDialog extends JFrame{
+    JFrame screen = new JFrame("List Cows");
+    private String info;
+
+
+    public JInfoDialog(String info){
+        this.info = info;
+    }
+
+    public void showScreen(){
+        screen.setLayout(new GridLayout(10, 2));
+        screen.setLocationByPlatform(true);
+
+
+        JLabel label = new JLabel(info);
+
+        screen.add(label);
+
+
+        screen.setPreferredSize(new Dimension(300, 300));
+        screen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        screen.setTitle(info);
+        screen.pack();
+        screen.setVisible(true);
     }
 
 }

@@ -1,9 +1,11 @@
 import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class DataStorage {
+public class DataStorage extends Thread{
 
     private String url = "jdbc:mysql://localhost:3306/farmappdb";
     private String username = "root";
@@ -12,21 +14,103 @@ public class DataStorage {
     private Statement statement;
 
 
+
+
     DataStorage() throws SQLException, ClassNotFoundException {
+        super("Data thread");
+
         Class.forName("com.mysql.cj.jdbc.Driver");
         connection = DriverManager.getConnection( url, username,password);
         statement = connection.createStatement();
+
+    }
+
+    public void run(){
+        try {
+            boolean result = checkMD5();
+
+            if(!result) new JInfoDialog("WARNING: Data has been updated").showScreen();
+
+        } catch (Exception e){
+            new JInfoDialog(e.toString()).showScreen();
+        }
     }
 
 
-    public void writeData(FarmMe farmMe) throws SQLException, IOException {
+    public String createMD5(ObjectInputStream in) throws IOException, NoSuchAlgorithmException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        int ch;
+        while ((ch = in.read()) != -1) {
+            baos.write (ch);
+        }
+
+        byte buffer[] = baos.toByteArray();
+
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+
+        md.reset();
+
+        md.update(buffer);
+
+
+        byte digest[] = md.digest();
+
+        StringBuffer hexString = new StringBuffer();
+        for (int i=0;i<digest.length;i++) {
+            hexString.append (
+                    Integer.toHexString(0xFF & digest[i]));
+            hexString.append (" ");
+        }
+        baos.close();
+
+
+        return hexString.toString();
+
+    }
+
+    public boolean checkMD5() throws IOException, NoSuchAlgorithmException {
         File file = new File("animal.txt");
 
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
-            out.writeObject(farmMe.animals.get(0));
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+
+        String md5 = createMD5(in);
+        in.close();
+
+        File md5File = new File("md5.txt");
+
+        DataInputStream md5In = new DataInputStream(new FileInputStream(md5File));
+
+        String orgMd5 = md5In.readUTF();
+
+        md5In.close();
+
+        return md5.equalsIgnoreCase(orgMd5);
+    }
+
+
+    public void writeData(FarmMe farmMe) throws SQLException, IOException, NoSuchAlgorithmException {
+        File file = new File("animal.txt");
+        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
+        outputStream.writeObject(farmMe.animals);
+
+
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+
+
+        String md5String = createMD5(in);
+        in.close();
+
+        File md5File = new File("md5.txt");
+
+
+        DataOutputStream md5Writer = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(md5File)));
+
+        md5Writer.writeUTF(md5String);
+
+        md5Writer.close();
+
 
         statement.execute("DELETE FROM animal");
         statement.execute("DELETE FROM employee");
@@ -54,15 +138,12 @@ public class DataStorage {
                         + ",'" + employee.getGender() + "'," + "STR_TO_DATE('" + employee.getDateOfBirth().toString() + "'" + ", '%Y-%m-%d')" + "," + "'v'," + ((Veterinary) employee).getBScDegree() + ","
                         + "STR_TO_DATE('" + ((Veterinary) employee).getDateOfGraduation().toString() + "'" + ", '%Y-%m-%d')" + "," + ((Veterinary) employee).getExpertiseLevel() + ", '', 0);";
 
-                System.out.println(insertSQL);
-
                 statement.execute(insertSQL);
 
             }else if(employee instanceof FarmWorker){
                 String insertSQL = "INSERT INTO employee (`empID`, `gender`, `dateOfBirth`, `type`, `BScDegree`, `dateOfGraduation`, `expertiseLevel`, `previousFarmName`, `workExperience`) VALUES (" + employee.getEmpID()
                         + ",'" + employee.getGender() + "'," + "STR_TO_DATE('" + employee.getDateOfBirth().toString() + "'" + ", '%Y-%m-%d')" + "," + "'f'," + "false" + ","
                         + "STR_TO_DATE('" + "1998-02-01" + "'" + ", '%Y-%m-%d')" + "," + "0" + ",'" + ((FarmWorker) employee).getPreviousFarmName() + "',"+ ((FarmWorker) employee).getWorkExperience() + ");";
-                System.out.println(insertSQL);
 
                 statement.execute(insertSQL);
             }
@@ -72,7 +153,7 @@ public class DataStorage {
 
     }
 
-    public void readData(FarmMe farmMe) throws SQLException {
+    public void readData(FarmMe farmMe) throws SQLException{
         ResultSet animalRs = statement.executeQuery("SELECT * From animal");
 
 
@@ -125,17 +206,6 @@ public class DataStorage {
                 ));
             }
         }
-
-        File file = new File("animal.txt");
-
-        Animal animal = null;
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
-            animal = (Animal)in.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(animal.getDateOfBirth());
     }
 
 }

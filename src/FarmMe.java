@@ -1,5 +1,7 @@
 import javax.swing.table.DefaultTableModel;
 import javax.xml.crypto.Data;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +38,8 @@ public class FarmMe {
 
     public DataStorage dataStorage;
 
+
+
     /**
      * Main method that is executed when program runs.
      *
@@ -49,18 +53,6 @@ public class FarmMe {
         }catch (Exception e){
             System.out.println(e);
         }
-
-
-        
-        /*StorageManager storageManager = new StorageManager();
-        try {
-            storageManager.InitializeStorage();
-        }catch (Exception e){
-
-
-        }*/
-
-
 
         Gui gui = new Gui(farm);
         gui.showGUI();
@@ -1677,15 +1669,21 @@ public class FarmMe {
      * Terminates the program
      */
     public void exit(){
-        System.out.println("Goodbye!");
+        try {
+            this.dataStorage.writeData(this);
+
+        }catch (Exception e){
+
+        }
         System.exit(0);
     }
 
     /**
      * Instantiates a new Farm me with empty animal and employee list
      */
-    public FarmMe() throws SQLException, ClassNotFoundException {
+    public FarmMe() throws SQLException, ClassNotFoundException, IOException, NoSuchAlgorithmException {
         this.dataStorage = new DataStorage();
+        dataStorage.start();
         dataStorage.readData(this);
     }
 
